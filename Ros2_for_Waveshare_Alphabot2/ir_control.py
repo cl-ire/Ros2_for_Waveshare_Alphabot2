@@ -2,7 +2,7 @@
 
 import rospy
 import socket
-from waveshare_alphabot2.msg import IR
+from Ros2_for_Waveshare_Alphabot2.msg import IR
 
 LIRCPATH = "/var/run/lirc/lircd"
 
