@@ -1,7 +1,7 @@
 import time
 import rclpy
 from geometry_msgs.msg import Twist
-from ros2_for_waveshare_alphabot2.msg import Pan_Tilt, IR, RGB_LED
+from ros2_for_waveshare_alphabot2.msg import PanTilt, IR, RGBLED
 from std_msgs.msg import Float32
 
 def main():
@@ -9,16 +9,16 @@ def main():
     node = rclpy.create_node("test")
 
     # Message publishers
-    pantilt_pub = node.create_publisher(Pan_Tilt, 'pan_tilt', 4)
-    rgb_pub = node.create_publisher(RGB_LED, 'rgb_leds', 4)
+    pantilt_pub = node.create_publisher(PanTilt, 'pan_tilt', 4)
+    rgb_pub = node.create_publisher(RGBLED, 'rgb_leds', 4)
     buzz_pub = node.create_publisher(Float32, 'buzzer', 4)
     move_pub = node.create_publisher(Twist, 'cmd_vel', 4)
 
     time.sleep(1)
 
     # Messages
-    pantilt_msg = Pan_Tilt()
-    rgb_led_msg = RGB_LED()
+    pantilt_msg = PanTilt()
+    rgb_led_msg = RGBLED()
 
     # beep
     print('buzz......')
