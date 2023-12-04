@@ -1,29 +1,20 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.8)
 project(Ros2_for_Waveshare_Alphabot2)
 
+# Find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(message_generation REQUIRED)
+find_package(Alphabot2_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
-################################################
-## Declare ROS messages, services and actions ##
-################################################
-
-add_message_files(
-  DIRECTORY msg
-  FILES
-  IR.msg
-  Line_Follow.msg
-  Line_Follow_Stamped.msg
-  Obstacle_Stamped.msg
-  Pan_Tilt.msg
-  Pan_Tilt_Stamped.msg
-  RGB_LED.msg
-)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
-
-#add dynamic reconfigure api
-generate_dynamic_reconfigure_options(
-
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/IR.msg"
+  "msg/Line_Follow.msg"
+  "msg/Line_Follow_Stamped.msg"
+  "msg/Obstacle_Stamped.msg"
+  "msg/Pan_Tilt.msg"
+  "msg/Pan_Tilt_Stamped.msg"
+  "msg/RGB_LED.msg"
+  DEPENDENCIES std_msgs
 )
