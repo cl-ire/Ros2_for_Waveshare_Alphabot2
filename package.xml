@@ -30,7 +30,14 @@
   <export>
     <build_type>ament_python</build_type>
     <ament_python:entry_points>
-        your_executable = your_package.your_module:main
+        ir_control = ros2_for_waveshare_alphabot2.ir_control:main,
+        joystick = ros2_for_waveshare_alphabot2.joystick:main,
+        motion = ros2_for_waveshare_alphabot2.motion:main,
+        pan_tilt = ros2_for_waveshare_alphabot2.pan_tilt:main,
+        rgb_leds = ros2_for_waveshare_alphabot2.rgb_leds:main,
+        sensors = ros2_for_waveshare_alphabot2.sensors:main,
+        sound = ros2_for_waveshare_alphabot2.sound:main,
+        alphabot2_test = ros2_for_waveshare_alphabot2.test:main,
     </ament_python:entry_points>
     <libexec_directory>lib/${PROJECT_NAME}</libexec_directory>
   </export>
