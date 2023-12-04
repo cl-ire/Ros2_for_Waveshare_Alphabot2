@@ -32,11 +32,11 @@ class SensorDriver(Node):
         self.rate = self.create_rate(self.get_parameter_or('~rate', 10).value)
 
         # Setup publisher for obstacle detection
-        self.pub_right = self.create_publisher(Obstacle_Stamped, 'obstacle_right', 4)
-        self.pub_left = self.create_publisher(Obstacle_Stamped, 'obstacle_left', 4)
+        self.pub_right = self.create_publisher(ObstacleStamped, 'obstacle_right', 4)
+        self.pub_left = self.create_publisher(ObstacleStamped, 'obstacle_left', 4)
 
         # Setup publisher for the line following sensor
-        self.pub_line_follow = self.create_publisher(Line_Follow_Stamped, 'line_follow', 4)
+        self.pub_line_follow = self.create_publisher(LineFollowStamped, 'line_follow', 4)
 
         self.loginfo("Node 'sensors' configuration complete.")
 
@@ -53,11 +53,11 @@ class SensorDriver(Node):
             DR_status = not bool(GPIO.input(self.DR))
             DL_status = not bool(GPIO.input(self.DL))
 
-            DR_message = Obstacle_Stamped()
+            DR_message = ObstacleStamped()
             DR_message.header.stamp = self.get_clock().now().to_msg()
             DR_message.obstacle = DR_status
 
-            DL_message = Obstacle_Stamped()
+            DL_message = ObstacleStamped()
             DL_message.header.stamp = self.get_clock().now().to_msg()
             DL_message.obstacle = DL_status
 
@@ -66,14 +66,14 @@ class SensorDriver(Node):
 
             line_follow_value = self.analog_read()
 
-            line_follow_msg = Line_Follow()
+            line_follow_msg = LineFollow()
             line_follow_msg.left_outer = line_follow_value[0]
             line_follow_msg.left_inner = line_follow_value[1]
             line_follow_msg.centre = line_follow_value[2]
             line_follow_msg.right_inner = line_follow_value[3]
             line_follow_msg.right_outer = line_follow_value[4]
 
-            line_follow_stamped_msg = Line_Follow_Stamped()
+            line_follow_stamped_msg = LineFollowStamped()
             header = Header()
             header.stamp = self.get_clock().now().to_msg()
             line_follow_stamped_msg.header = header

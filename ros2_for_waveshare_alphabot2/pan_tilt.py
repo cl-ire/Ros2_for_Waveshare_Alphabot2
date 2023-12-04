@@ -119,7 +119,7 @@ class CameraPanTiltDriver(Node):
         self.pwm.setServoPulse(0, self.HPulse)
         self.pwm.setServoPulse(1, self.VPulse)
 
-        self.subscription = self.create_subscription(Pan_Tilt, 'pan_tilt', self.pan_tilt_callback, 10)
+        self.subscription = self.create_subscription(PanTilt, 'pan_tilt', self.pan_tilt_callback, 10)
 
         self.tf_broadcaster = TransformBroadcaster(self)
 

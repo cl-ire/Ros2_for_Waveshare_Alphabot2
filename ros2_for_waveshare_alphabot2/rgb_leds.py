@@ -20,7 +20,7 @@ class LedDriver:
 
         # Setup subscriber for rgb_led message
         self.subscriber = self.node.create_subscription(
-            RGB_LED,
+            RGBLED,
             'rgb_leds',
             self.rgbled_callback,
             10
