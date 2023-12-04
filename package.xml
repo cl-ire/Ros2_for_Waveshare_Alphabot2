@@ -1,5 +1,5 @@
 <package>
-  <name>waveshare_alphabot2</name>
+  <name>Ros2_for_Waveshare_Alphabot2</name>
   <version>0.1.0</version>
   <description>Waveshare Alphabot 2 Raspberry Pi powered robot.</description>
   <maintainer email="ubuntu@todo.todo">Claire Schubert</maintainer>
