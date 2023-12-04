@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
-<package format="3">
+<package format="3" xmlns:ament_python="http://ament.org/schema/ament_python">
   <name>ros2_for_waveshare_alphabot2</name>
   <version>0.0.0</version>
   <description>Camera Subscriber for the topic /image_raw form the v4l2_camera_node </description>
