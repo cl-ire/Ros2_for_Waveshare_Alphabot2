@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Header, Int16
-from ros2_for_waveshare_alphabot2.msg import Obstacle_Stamped, Line_Follow_Stamped, Line_Follow
+from ros2_for_waveshare_alphabot2.msg import ObstacleStamped, LineFollowStamped, LineFollow
 
 import RPi.GPIO as GPIO
 import time

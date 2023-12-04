@@ -4,7 +4,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Header
 from geometry_msgs.msg import TransformStamped
-from ros2_for_waveshare_alphabot2.msg import Pan_Tilt
+from ros2_for_waveshare_alphabot2.msg import PanTilt
 
 import time
 import math
