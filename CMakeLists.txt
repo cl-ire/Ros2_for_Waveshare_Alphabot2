@@ -5,17 +5,16 @@ project(ros2_for_waveshare_alphabot2)
 find_package(ament_cmake REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
-find_package(Alphabot2_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/IR.msg"
-  "msg/Line_Follow.msg"
-  "msg/Line_Follow_Stamped.msg"
-  "msg/Obstacle_Stamped.msg"
-  "msg/Pan_Tilt.msg"
-  "msg/Pan_Tilt_Stamped.msg"
-  "msg/RGB_LED.msg"
+  "msg/LineFollow.msg"
+  "msg/LineFollowStamped.msg"
+  "msg/ObstacleStamped.msg"
+  "msg/PanTilt.msg"
+  "msg/PanTiltStamped.msg"
+  "msg/RGBLED.msg"
   DEPENDENCIES std_msgs
 )
 
