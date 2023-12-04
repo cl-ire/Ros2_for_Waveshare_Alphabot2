@@ -5,7 +5,6 @@ project(ros2_for_waveshare_alphabot2)
 find_package(ament_cmake REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/IR.msg"
@@ -18,9 +17,10 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES std_msgs
 )
 
-install(DIRECTORY
+install(
+  DIRECTORY
   lib/ros2_for_waveshare_alphabot2
-  DESTINATION lib/ros2_for_waveshare_alphabot2
+  DESTINATION lib
 )
 
 install(
@@ -33,5 +33,7 @@ install(
     ros2_for_waveshare_alphabot2/sensors.py
     ros2_for_waveshare_alphabot2/sound.py
     ros2_for_waveshare_alphabot2/test.py
-    DESTINATION lib/${PROJECT_NAME}
+    DESTINATION lib/ros2_for_waveshare_alphabot2
 )
+
+ament_package()
