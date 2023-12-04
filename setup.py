@@ -1,3 +1,7 @@
+import os
+from glob import glob
+from setuptools import setup
+
 from setuptools import find_packages, setup
 
 package_name = 'Ros2_for_Waveshare_Alphabot2'
@@ -10,6 +14,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        # Include all launch files.
+        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*')))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -27,7 +33,7 @@ setup(
             'rgb_leds = Ros2_for_Waveshare_Alphabot2.rgb_leds:main',
             'sensors = Ros2_for_Waveshare_Alphabot2.sensors:main',
             'sound = Ros2_for_Waveshare_Alphabot2.sound:main',
-            'alphabot_test = scripts.test:main',
+            'alphabot2_test = Ros2_for_Waveshare_Alphabot2.test:main',
         ],
     },
 )

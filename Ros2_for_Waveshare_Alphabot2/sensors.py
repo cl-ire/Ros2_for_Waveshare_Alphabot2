@@ -1,166 +1,120 @@
-#!/usr/bin/env python
-
-import rospy
-from std_msgs.msg import Int16
-from std_msgs.msg import Header
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import Header, Int16
+from Ros2_for_Waveshare_Alphabot2.msg import Obstacle_Stamped, Line_Follow_Stamped, Line_Follow
 
 import RPi.GPIO as GPIO
 import time
 
-from Ros2_for_Waveshare_Alphabot2.msg import Obstacle_Stamped
-from Ros2_for_Waveshare_Alphabot2.msg import Line_Follow_Stamped
-from Ros2_for_Waveshare_Alphabot2.msg import Line_Follow
+class SensorDriver(Node):
+    def __init__(self, dr=16, dl=19, cs=5, clock=25, address=24, dataout=23):
+        super().__init__('sensor_driver')
+        self.loginfo("Node 'sensors' configuring driver.")
 
-# Collision Left
-# Collision Right
-# Line Sensor
-#   Centre
-#   Left Inner
-#   Right Inner
-#   Left Outer
-#   Right Outer
+        self.numSensors = 5
+        self.DR = dr
+        self.DL = dl
+        self.CS = cs
+        self.Clock = clock
+        self.Address = address
+        self.DataOut = dataout
 
-# Collision Sensor
-DR = 16
-DL = 19
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
 
-# Line following sensor
-CS = 5
-Clock = 25
-Address = 24
-DataOut = 23
+        GPIO.setup(self.DR, GPIO.IN, GPIO.PUD_UP)
+        GPIO.setup(self.DL, GPIO.IN, GPIO.PUD_UP)
+        GPIO.setup(self.Clock, GPIO.OUT)
+        GPIO.setup(self.Address, GPIO.OUT)
+        GPIO.setup(self.CS, GPIO.OUT)
+        GPIO.setup(self.DataOut, GPIO.IN, GPIO.PUD_UP)
 
-class sensor_driver:
+        self.rate = self.create_rate(self.get_parameter_or('~rate', 10).value)
 
-	def __init__(self, dr=16, dl=19, cs=5, clock=25, address=24, dataout=23):
-		rospy.init_node("sensor_driver")
-		rospy.loginfo("Node 'sensors' configuring driver.")
+        # Setup publisher for obstacle detection
+        self.pub_right = self.create_publisher(Obstacle_Stamped, 'obstacle_right', 4)
+        self.pub_left = self.create_publisher(Obstacle_Stamped, 'obstacle_left', 4)
 
-		self.numSensors = 5
-		self.DR = dr
-		self.DL = dl
+        # Setup publisher for the line following sensor
+        self.pub_line_follow = self.create_publisher(Line_Follow_Stamped, 'line_follow', 4)
 
-		self.CS = cs
-		self.Clock = clock
-		self.Address = address
-		self.DataOut = dataout
+        self.loginfo("Node 'sensors' configuration complete.")
 
-		GPIO.setmode(GPIO.BCM)
-		GPIO.setwarnings(False)
-		
-		GPIO.setup(self.DR,GPIO.IN,GPIO.PUD_UP)
-		GPIO.setup(self.DL,GPIO.IN,GPIO.PUD_UP)
+    def __del__(self):
+        GPIO.cleanup()
 
-		GPIO.setup(self.Clock,GPIO.OUT)
-		GPIO.setup(self.Address,GPIO.OUT)
-		GPIO.setup(self.CS,GPIO.OUT)
-		GPIO.setup(self.DataOut,GPIO.IN,GPIO.PUD_UP)
-		
-		self.rate = rospy.Rate(rospy.get_param('~rate', 10))
+    def run(self):
+        DR_status = False
+        DL_status = False
 
-		# Setup publisher for obstacle detection
-		self.pub_right = rospy.Publisher('obstacle_right', Obstacle_Stamped, queue_size=4)
-		self.pub_left = rospy.Publisher('obstacle_left', Obstacle_Stamped, queue_size=4)
+        self.loginfo("Node 'sensors' running.")
 
-		# Setup publisher for the line following sensor
-		self.pub_line_follow = rospy.Publisher('line_follow', Line_Follow_Stamped, queue_size=4)
+        while rclpy.ok():
+            DR_status = not bool(GPIO.input(self.DR))
+            DL_status = not bool(GPIO.input(self.DL))
 
-		rospy.loginfo("Node 'sensors' configuration complete.")
+            DR_message = Obstacle_Stamped()
+            DR_message.header.stamp = self.get_clock().now().to_msg()
+            DR_message.obstacle = DR_status
 
-	def __del__(self):
-		GPIO.cleanup()
+            DL_message = Obstacle_Stamped()
+            DL_message.header.stamp = self.get_clock().now().to_msg()
+            DL_message.obstacle = DL_status
 
-	def run(self):	  
-		# Initialise: Lost contact
-		DR_status = False
-		DL_status = False
-		
-		rospy.loginfo("Node 'sensors' running.")
+            self.pub_right.publish(DR_message)
+            self.pub_left.publish(DL_message)
 
-		while not rospy.is_shutdown():
-			# Read sensor. False = no obstacle, True = Obstacle
-			DR_status = not bool(GPIO.input(self.DR))
-			DL_status = not bool(GPIO.input(self.DL))
+            line_follow_value = self.analog_read()
 
-			DR_message = Obstacle_Stamped()
-			DR_message.header.stamp = rospy.Time.now()
-			DR_message.obstacle = DR_status
+            line_follow_msg = Line_Follow()
+            line_follow_msg.left_outer = line_follow_value[0]
+            line_follow_msg.left_inner = line_follow_value[1]
+            line_follow_msg.centre = line_follow_value[2]
+            line_follow_msg.right_inner = line_follow_value[3]
+            line_follow_msg.right_outer = line_follow_value[4]
 
-			DL_message = Obstacle_Stamped()
-			DL_message.header.stamp = rospy.Time.now()
-			DL_message.obstacle = DL_status
+            line_follow_stamped_msg = Line_Follow_Stamped()
+            header = Header()
+            header.stamp = self.get_clock().now().to_msg()
+            line_follow_stamped_msg.header = header
+            line_follow_stamped_msg.sensors = line_follow_msg
 
-			# Publish the collision sensor values
-			self.pub_right.publish(DR_message)
-			self.pub_left.publish(DL_message)
-			
-			# Read the sensor values
-			line_follow_value = self.AnalogRead()
+            self.pub_line_follow.publish(line_follow_stamped_msg)
 
-			# Create the message
-			line_follow_msg = Line_Follow()
-			line_follow_msg.left_outer = line_follow_value[0]
-			line_follow_msg.left_inner = line_follow_value[1]
-			line_follow_msg.centre = line_follow_value[2]
-			line_follow_msg.right_inner = line_follow_value[3]
-			line_follow_msg.right_outer = line_follow_value[4]
+            self.rate.sleep()
 
-			# Create the time stamped message
-			line_follow_stamped_msg = Line_Follow_Stamped()
-			header = Header()
-			header.stamp = rospy.Time.now()
-			line_follow_stamped_msg.header = header
-			line_follow_stamped_msg.sensors = line_follow_msg
-
-			# Publish the Line Follow Sensor Data
-			self.pub_line_follow.publish(line_follow_stamped_msg)
-
-			self.rate.sleep()
-	
-	"""
-	Reads the sensor values into an array. There *MUST* be space
-	for as many values as there were sensors specified in the constructor.
-	Example usage:
-	unsigned int sensor_values[8];
-	sensors.read(sensor_values);
-	The values returned are a measure of the reflectance in abstract units,
-	with higher values corresponding to lower reflectance (e.g. a black
-	surface or a void).
-	"""
-	def AnalogRead(self):
-		value = [0]*(self.numSensors+1)
-		#Read Channel0~channel6 AD value
-		for j in range(0,self.numSensors+1):
-			GPIO.output(CS, GPIO.LOW)
-			for i in range(0,4):
-				#sent 4-bit Address
-				if(((j) >> (3 - i)) & 0x01):
-					GPIO.output(Address,GPIO.HIGH)
-				else:
-					GPIO.output(Address,GPIO.LOW)
-				#read MSB 4-bit data
-				value[j] <<= 1
-				if(GPIO.input(DataOut)):
-					value[j] |= 0x01
-				GPIO.output(Clock,GPIO.HIGH)
-				GPIO.output(Clock,GPIO.LOW)
-			for i in range(0,6):
-				#read LSB 8-bit data
-				value[j] <<= 1
-				if(GPIO.input(DataOut)):
-					value[j] |= 0x01
-				GPIO.output(Clock,GPIO.HIGH)
-				GPIO.output(Clock,GPIO.LOW)
-			time.sleep(0.0001)
-			GPIO.output(CS,GPIO.HIGH)
-		return value[1:]
+    def analog_read(self):
+        value = [0] * (self.numSensors + 1)
+        for j in range(0, self.numSensors + 1):
+            GPIO.output(self.CS, GPIO.LOW)
+            for i in range(0, 4):
+                if (((j) >> (3 - i)) & 0x01):
+                    GPIO.output(self.Address, GPIO.HIGH)
+                else:
+                    GPIO.output(self.Address, GPIO.LOW)
+                value[j] <<= 1
+                if GPIO.input(self.DataOut):
+                    value[j] |= 0x01
+                GPIO.output(self.Clock, GPIO.HIGH)
+                GPIO.output(self.Clock, GPIO.LOW)
+            for i in range(0, 6):
+                value[j] <<= 1
+                if GPIO.input(self.DataOut):
+                    value[j] |= 0x01
+                GPIO.output(self.Clock, GPIO.HIGH)
+                GPIO.output(self.Clock, GPIO.LOW)
+            time.sleep(0.0001)
+            GPIO.output(self.CS, GPIO.HIGH)
+        return value[1:]
 
 
 def main():
-	rospy.loginfo("Starting node 'sensors'")
-	driver = sensor_driver()
-	driver.run()
-	rospy.loginfo("Node 'sensors' Stopped")
+    rclpy.init()
+    node = SensorDriver()
+    node.run()
+    rclpy.shutdown()
+    print("Node 'sensors' Stopped")
+
 
 if __name__ == '__main__':
-	main()
+    main()
