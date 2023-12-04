@@ -7,7 +7,7 @@ from pathlib import Path
 def generate_launch_description():
     return LaunchDescription([
         Node(
-            package='Ros2_for_Waveshare_Alphabot2',
+            package='ros2_for_waveshare_alphabot2',
             executable='alphabot2_test',
             name='alphabot2_test',
             output='screen',

@@ -4,7 +4,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     return LaunchDescription([
         Node(
-            package='Ros2_for_Waveshare_Alphabot2',
+            package='ros2_for_waveshare_alphabot2',
             executable='pan_tilt',
             name='camera_pan_tilt_node',
             output='screen',
@@ -20,7 +20,7 @@ def generate_launch_description():
         ),
 
         Node(
-            package='Ros2_for_Waveshare_Alphabot2',
+            package='ros2_for_waveshare_alphabot2',
             executable='ir_control.py',
             name='ir_control',
             output='screen',
@@ -30,7 +30,7 @@ def generate_launch_description():
         ),
 
         Node(
-            package='Ros2_for_Waveshare_Alphabot2',  # replace with your actual package name
+            package='ros2_for_waveshare_alphabot2',  # replace with your actual package name
             executable='joystick',  # replace with your actual node script name
             name='joystick_driver',
             output='screen',
@@ -39,7 +39,7 @@ def generate_launch_description():
         ),
 
         Node(
-            package='Ros2_for_Waveshare_Alphabot2',  # replace with your actual package name
+            package='ros2_for_waveshare_alphabot2',  # replace with your actual package name
             executable='motion',  # replace with your actual executable name
             name='motion',
             output='screen',
@@ -60,7 +60,7 @@ def generate_launch_description():
         ),
 
         Node(
-            package='Ros2_for_Waveshare_Alphabot2',  # replace with your actual package name
+            package='ros2_for_waveshare_alphabot2',  # replace with your actual package name
             executable='rgb_leds',  # replace with your actual executable name
             name='rgb_leds',
             output='screen',
@@ -72,7 +72,7 @@ def generate_launch_description():
         ),
 
         Node(
-            package='Ros2_for_Waveshare_Alphabot2',  # Replace with the actual package name
+            package='ros2_for_waveshare_alphabot2',  # Replace with the actual package name
             executable='sensors',  # Replace with the actual executable name
             name='sensors',
             output='screen',
@@ -88,7 +88,7 @@ def generate_launch_description():
         ),
 
         Node(
-            package='Ros2_for_Waveshare_Alphabot2',  # replace with your actual package name
+            package='ros2_for_waveshare_alphabot2',  # replace with your actual package name
             executable='sound',  # replace with your actual executable name
             name='sound',
             output='screen',
