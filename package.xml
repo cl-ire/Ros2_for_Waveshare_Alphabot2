@@ -39,6 +39,6 @@
         sound = ros2_for_waveshare_alphabot2.sound:main,
         alphabot2_test = ros2_for_waveshare_alphabot2.test:main,
     </ament_python:entry_points>
-    <libexec_directory>lib/${PROJECT_NAME}</libexec_directory>
+    <libexec_directory>lib/ros2_for_waveshare_alphabot2</libexec_directory>
   </export>
 </package>
