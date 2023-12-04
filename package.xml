@@ -24,5 +24,9 @@
 
   <export>
     <build_type>ament_python</build_type>
+    <ament_python:entry_points>
+        your_executable = your_package.your_module:main
+    </ament_python:entry_points>
+    <libexec_directory>lib/${PROJECT_NAME}</libexec_directory>
   </export>
 </package>

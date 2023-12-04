@@ -18,3 +18,9 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/RGB_LED.msg"
   DEPENDENCIES std_msgs
 )
+
+install(
+    PROGRAMS
+    scripts/your_executable_script
+    DESTINATION lib/${PROJECT_NAME}
+)
