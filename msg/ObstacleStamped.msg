@@ -1,3 +1,3 @@
 # False = no obstacle, True = Obstacle
-Header header
+std_msgs/Header header
 bool obstacle
