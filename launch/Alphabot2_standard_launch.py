@@ -41,7 +41,7 @@ def generate_launch_description():
         Node(
             package='Ros2_for_Waveshare_Alphabot2',  # replace with your actual package name
             executable='motion',  # replace with your actual executable name
-            name='motion_node',
+            name='motion',
             output='screen',
             parameters=[
                 {'in1': 13},
@@ -62,7 +62,7 @@ def generate_launch_description():
         Node(
             package='Ros2_for_Waveshare_Alphabot2',  # replace with your actual package name
             executable='rgb_leds',  # replace with your actual executable name
-            name='led_driver_node',
+            name='rgb_leds',
             output='screen',
             parameters=[
                 {'server_address': 'http://localhost/'},
@@ -74,7 +74,7 @@ def generate_launch_description():
         Node(
             package='Ros2_for_Waveshare_Alphabot2',  # Replace with the actual package name
             executable='sensors',  # Replace with the actual executable name
-            name='sensor_driver',
+            name='sensors',
             output='screen',
             parameters=[
                 {'dr': 16},
@@ -90,7 +90,7 @@ def generate_launch_description():
         Node(
             package='Ros2_for_Waveshare_Alphabot2',  # replace with your actual package name
             executable='sound',  # replace with your actual executable name
-            name='sound_driver',
+            name='sound',
             output='screen',
             parameters=[
                 {'~rate': 10}
