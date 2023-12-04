@@ -18,6 +18,11 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES std_msgs
 )
 
+install(DIRECTORY
+  lib/ros2_for_waveshare_alphabot2
+  DESTINATION lib/ros2_for_waveshare_alphabot2
+)
+
 install(
     PROGRAMS
     ros2_for_waveshare_alphabot2/ir_control.py
