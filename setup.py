@@ -4,7 +4,7 @@ from setuptools import setup
 
 from setuptools import find_packages, setup
 
-package_name = 'Ros2_for_Waveshare_Alphabot2'
+package_name = 'ros2_for_waveshare_alphabot2'
 
 setup(
     name=package_name,
@@ -15,25 +15,25 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         # Include all launch files.
-        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*')))
+        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.py')))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='Claire Schubert',
     maintainer_email='ubuntu@todo.todo',
-    description='Camera Subscriber for the topic /image_raw form the v4l2_camera_node',
+    description='',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'ir_control = Ros2_for_Waveshare_Alphabot2.ir_control:main',
-            'joystick = Ros2_for_Waveshare_Alphabot2.joystick:main',
-            'motion = Ros2_for_Waveshare_Alphabot2.motion:main',
-            'pan_tilt = Ros2_for_Waveshare_Alphabot2.pan_tilt:main',
-            'rgb_leds = Ros2_for_Waveshare_Alphabot2.rgb_leds:main',
-            'sensors = Ros2_for_Waveshare_Alphabot2.sensors:main',
-            'sound = Ros2_for_Waveshare_Alphabot2.sound:main',
-            'alphabot2_test = Ros2_for_Waveshare_Alphabot2.test:main',
+            'ir_control = ros2_for_waveshare_alphabot2.ir_control:main',
+            'joystick = ros2_for_waveshare_alphabot2.joystick:main',
+            'motion = ros2_for_waveshare_alphabot2.motion:main',
+            'pan_tilt = ros2_for_waveshare_alphabot2.pan_tilt:main',
+            'rgb_leds = ros2_for_waveshare_alphabot2.rgb_leds:main',
+            'sensors = ros2_for_waveshare_alphabot2.sensors:main',
+            'sound = ros2_for_waveshare_alphabot2.sound:main',
+            'alphabot2_test = ros2_for_waveshare_alphabot2.test:main',
         ],
     },
 )

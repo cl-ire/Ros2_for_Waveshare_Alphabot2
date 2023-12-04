@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(Ros2_for_Waveshare_Alphabot2)
+project(ros2_for_waveshare_alphabot2)
 
 # Find dependencies
 find_package(ament_cmake REQUIRED)

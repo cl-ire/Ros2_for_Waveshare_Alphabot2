@@ -3,7 +3,7 @@
 import socket
 import rclpy
 from rclpy.node import Node
-from Ros2_for_Waveshare_Alphabot2.msg import IR
+from ros2_for_waveshare_alphabot2.msg import IR
 
 LIRCPATH = "/var/run/lirc/lircd"
 

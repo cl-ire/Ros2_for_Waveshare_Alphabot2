@@ -1,7 +1,7 @@
 import time
 import rclpy
 from geometry_msgs.msg import Twist
-from Ros2_for_Waveshare_Alphabot2.msg import Pan_Tilt, IR, RGB_LED
+from ros2_for_waveshare_alphabot2.msg import Pan_Tilt, IR, RGB_LED
 from std_msgs.msg import Float32
 
 def main():

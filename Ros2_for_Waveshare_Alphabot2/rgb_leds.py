@@ -2,7 +2,7 @@
 
 import rclpy
 from std_msgs.msg import String
-from Ros2_for_Waveshare_Alphabot2.msg import RGB_LED
+from ros2_for_waveshare_alphabot2.msg import RGB_LED
 
 import requests
 
