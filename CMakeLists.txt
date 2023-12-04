@@ -33,7 +33,7 @@ install(
     ros2_for_waveshare_alphabot2/sensors.py
     ros2_for_waveshare_alphabot2/sound.py
     ros2_for_waveshare_alphabot2/test.py
-    DESTINATION lib/ros2_for_waveshare_alphabot2
+    DESTINATION libexec/ros2_for_waveshare_alphabot2
 )
 
 ament_package()
