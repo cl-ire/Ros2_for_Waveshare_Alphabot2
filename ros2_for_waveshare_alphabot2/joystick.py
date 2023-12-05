@@ -46,33 +46,33 @@ class JoystickDriver(Node):
             if GPIO.input(self.CTR) == 0:
                 # center
                 while GPIO.input(self.CTR) == 0:
-                    self.pub.publish(String("Center"))
+                    self.pub.publish(String(data="Center"))
                     self.get_logger().info("Node 'joystick' Center.")
             elif GPIO.input(self.A) == 0:
                 # up
                 while GPIO.input(self.A) == 0:
-                    self.pub.publish(String("Up"))
+                    self.pub.publish(String(data="Up"))
                     self.get_logger().info("Node 'joystick' Up.")
             elif GPIO.input(self.B) == 0:
                 # right
                 while GPIO.input(self.B) == 0:
-                    self.pub.publish(String("Right"))
+                    self.pub.publish(String(data="Right"))
                     self.get_logger().info("Node 'joystick' Right.")
             elif GPIO.input(self.C) == 0:
                 # left
                 while GPIO.input(self.C) == 0:
-                    self.pub.publish(String("Left"))
+                    self.pub.publish(String(data="Left"))
                     self.get_logger().info("Node 'joystick' Left.")
             elif GPIO.input(self.D) == 0:
                 # down
                 while GPIO.input(self.D) == 0:
-                    self.pub.publish(String("Down"))
+                    self.pub.publish(String(data="Down"))
                     self.get_logger().info("Node 'joystick' Down.")
 
             self.rate.sleep()
 
 def main():
-    rclpy.init(args=args)
+    rclpy.init()
     node = JoystickDriver()
     try:
         node.run()
