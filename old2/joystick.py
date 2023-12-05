@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import RPi.GPIO as GPIO
+import lgpio
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -23,13 +23,15 @@ class JoystickDriver(Node):
         self.C = c
         self.D = d
 
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
-        GPIO.setup(self.CTR, GPIO.IN, GPIO.PUD_UP)
-        GPIO.setup(self.A, GPIO.IN, GPIO.PUD_UP)
-        GPIO.setup(self.B, GPIO.IN, GPIO.PUD_UP)
-        GPIO.setup(self.C, GPIO.IN, GPIO.PUD_UP)
-        GPIO.setup(self.D, GPIO.IN, GPIO.PUD_UP)
+        # Initialize the lgpio library
+        self.lgpio = lgpio.gpiochip_open(0)
+        
+        # Set the GPIO pins as inputs with pull-up resistors
+        lgpio.gpio_claim_input(self.lgpio, self.CTR, lgpio.PI_PUD_DOWN)
+        lgpio.gpio_claim_input(self.lgpio, self.A, lgpio.PI_PUD_DOWN)
+        lgpio.gpio_claim_input(self.lgpio, self.B, lgpio.PI_PUD_DOWN)
+        lgpio.gpio_claim_input(self.lgpio, self.C, lgpio.PI_PUD_DOWN)
+        lgpio.gpio_claim_input(self.lgpio, self.D, lgpio.PI_PUD_DOWN)
 
         self.rate = self.create_rate(self.get_parameter_or('~rate', 10))
 
@@ -38,41 +40,43 @@ class JoystickDriver(Node):
         self.get_logger().info("Node 'joystick' configured.")
 
     def __del__(self):
-        GPIO.cleanup()
+        # Close the lgpio library
+        lgpio.gpiochip_close(self.lgpio)
 
     def run(self):
         self.get_logger().info("Node 'joystick' running.")
         while rclpy.ok():
-            if GPIO.input(self.CTR) == 0:
+            if lgpio.gpio_read(self.lgpio, self.CTR) == 0:
                 # center
-                while GPIO.input(self.CTR) == 0:
+                while lgpio.gpio_read(self.lgpio, self.CTR) == 0:
                     self.pub.publish(String("Center"))
                     self.get_logger().info("Node 'joystick' Center.")
-            elif GPIO.input(self.A) == 0:
+            elif lgpio.gpio_read(self.lgpio, self.A) == 0:
                 # up
-                while GPIO.input(self.A) == 0:
+                while lgpio.gpio_read(self.lgpio, self.A) == 0:
                     self.pub.publish(String("Up"))
                     self.get_logger().info("Node 'joystick' Up.")
-            elif GPIO.input(self.B) == 0:
+            elif lgpio.gpio_read(self.lgpio, self.B) == 0:
                 # right
-                while GPIO.input(self.B) == 0:
+                while lgpio.gpio_read(self.lgpio, self.B) == 0:
                     self.pub.publish(String("Right"))
                     self.get_logger().info("Node 'joystick' Right.")
-            elif GPIO.input(self.C) == 0:
+            elif lgpio.gpio_read(self.lgpio, self.C) == 0:
                 # left
-                while GPIO.input(self.C) == 0:
+                while lgpio.gpio_read(self.lgpio, self.C) == 0:
                     self.pub.publish(String("Left"))
                     self.get_logger().info("Node 'joystick' Left.")
-            elif GPIO.input(self.D) == 0:
+            elif lgpio.gpio_read(self.lgpio, self.D) == 0:
                 # down
-                while GPIO.input(self.D) == 0:
+                while lgpio.gpio_read(self.lgpio, self.D) == 0:
                     self.pub.publish(String("Down"))
                     self.get_logger().info("Node 'joystick' Down.")
 
             self.rate.sleep()
 
 def main():
-    rclpy.init(args=args)
+    
+    rclpy.init()
     node = JoystickDriver()
     try:
         node.run()

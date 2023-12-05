@@ -5,11 +5,13 @@ Controls the Waveshare Alphabot2 robot wheel motors
 Updated code from DingoOz: https://github.com/DingoOz/Alphabot2_Pi_ROS/blob/master/src/alphabot2/src/driver_node
 Author: Shaun Price (https://github.com/ShaunPrice)
 '''
-import lgpio
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist, Vector3
 from std_msgs.msg import String
+
+import RPi.GPIO as GPIO
+import time
 
 # Raspberry PI GPIO Function to pin mapping
 IN1 = 13
@@ -34,19 +36,22 @@ class Motor:
     def __init__(self, forward_pin, backward_pin):
         self._forward_pin = forward_pin
         self._backward_pin = backward_pin
-        lgpio.gpio_claim_output(self._forward_pin, _FREQUENCY)
-        lgpio.gpio_claim_output(self._backward_pin, _FREQUENCY)
+        GPIO.setup(forward_pin, GPIO.OUT)
+        GPIO.setup(backward_pin, GPIO.OUT)
+
+        self._forward_pwm = GPIO.PWM(forward_pin, _FREQUENCY)
+        self._backward_pwm = GPIO.PWM(backward_pin, _FREQUENCY)
 
     def move(self, speed_percent):
         speed = _clip(abs(speed_percent), 0, 100)
 
         # A positive speed moves wheels forward, negative moves backward
         if speed_percent >= 0:
-            lgpio.pwm_set_duty_cycle(self._forward_pin, speed)
-            lgpio.pwm_set_duty_cycle(self._backward_pin, 0)
+            self._forward_pwm.start(speed)
+            self._backward_pwm.start(0)
         else:
-            lgpio.pwm_set_duty_cycle(self._backward_pin, speed)
-            lgpio.pwm_set_duty_cycle(self._forward_pin, 0)
+            self._backward_pwm.start(speed)
+            self._forward_pwm.start(0)
 
 class MotionDriver(Node):
     def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50):
@@ -62,31 +67,31 @@ class MotionDriver(Node):
         self.PA = pa
         self.PB = pb
 
-        # Initialize the lgpio library
-        self.lgpio = lgpio.gpiochip_open(0)
-
         # Configure GPIO
-        lgpio.gpio_claim_output(self.IN1, 0)
-        lgpio.gpio_claim_output(self.IN2, 0)
-        lgpio.gpio_claim_output(self.IN3, 0)
-        lgpio.gpio_claim_output(self.IN4, 0)
-        lgpio.gpio_claim_output(self.ENA, 0)
-        lgpio.gpio_claim_output(self.ENB, 0)
-
-        self.PWMA = lgpio.pwm_start(self.ENA, _FREQUENCY, self.PA)
-        self.PWMB = lgpio.pwm_start(self.ENB, _FREQUENCY, self.PB)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(self.IN1, GPIO.OUT)
+        GPIO.setup(self.IN2, GPIO.OUT)
+        GPIO.setup(self.IN3, GPIO.OUT)
+        GPIO.setup(self.IN4, GPIO.OUT)
+        GPIO.setup(self.ENA, GPIO.OUT)
+        GPIO.setup(self.ENB, GPIO.OUT)
+        self.PWMA = GPIO.PWM(self.ENA, 500)
+        self.PWMB = GPIO.PWM(self.ENB, 500)
+        self.PWMA.start(self.PA)
+        self.PWMB.start(self.PB)
 
         # Set ENA/ENB to high
-        lgpio.gpio_write(self.ENA, 1)
-        lgpio.gpio_write(self.ENB, 1)
+        GPIO.output(self.ENA, GPIO.HIGH)
+        GPIO.output(self.ENB, GPIO.HIGH)
 
         # Set forward
-        lgpio.pwm_set_duty_cycle(self.ENA, self.PA)
-        lgpio.pwm_set_duty_cycle(self.ENB, self.PB)
-        lgpio.gpio_write(self.IN1, 1)
-        lgpio.gpio_write(self.IN2, 0)
-        lgpio.gpio_write(self.IN3, 1)
-        lgpio.gpio_write(self.IN4, 0)
+        self.PWMA.ChangeDutyCycle(self.PA)
+        self.PWMB.ChangeDutyCycle(self.PB)
+        GPIO.output(self.IN1, GPIO.HIGH)
+        GPIO.output(self.IN2, GPIO.LOW)
+        GPIO.output(self.IN3, GPIO.HIGH)
+        GPIO.output(self.IN4, GPIO.LOW)
 
         self.loginfo("Node 'motion' GPIO configured.")
 
@@ -112,8 +117,7 @@ class MotionDriver(Node):
         self.loginfo("Node 'motion' configuration complete.")
 
     def __del__(self):
-        # Close the lgpio library
-        lgpio.gpiochip_close(self.lgpio)
+        GPIO.cleanup()
 
     def velocity_received_callback(self, message):
         self._last_received = self.get_time()
