@@ -1,8 +1,10 @@
-import lgpio
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Header, Int16
 from ros2_for_waveshare_alphabot2.msg import ObstacleStamped, LineFollowStamped, LineFollow
+
+import RPi.GPIO as GPIO
+import time
 
 class SensorDriver(Node):
     def __init__(self, dr=16, dl=19, cs=5, clock=25, address=24, dataout=23):
@@ -17,16 +19,15 @@ class SensorDriver(Node):
         self.Address = address
         self.DataOut = dataout
 
-        # Initialize the lgpio library
-        self.lgpio = lgpio.gpiochip_open(0)
-        
-        # Set the GPIO pins as inputs with pull-up resistors
-        lgpio.gpio_claim_input(self.lgpio, self.DR)
-        lgpio.gpio_claim_input(self.lgpio, self.DL)
-        lgpio.gpio_claim_output(self.lgpio, self.Clock)
-        lgpio.gpio_claim_output(self.lgpio, self.Address)
-        lgpio.gpio_claim_output(self.lgpio, self.CS)
-        lgpio.gpio_claim_input(self.lgpio, self.DataOut)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+
+        GPIO.setup(self.DR, GPIO.IN, GPIO.PUD_UP)
+        GPIO.setup(self.DL, GPIO.IN, GPIO.PUD_UP)
+        GPIO.setup(self.Clock, GPIO.OUT)
+        GPIO.setup(self.Address, GPIO.OUT)
+        GPIO.setup(self.CS, GPIO.OUT)
+        GPIO.setup(self.DataOut, GPIO.IN, GPIO.PUD_UP)
 
         self.rate = self.create_rate(self.get_parameter_or('~rate', 10))
 
@@ -40,8 +41,7 @@ class SensorDriver(Node):
         self.loginfo("Node 'sensors' configuration complete.")
 
     def __del__(self):
-        # Close the lgpio library
-        lgpio.gpiochip_close(self.lgpio)
+        GPIO.cleanup()
 
     def run(self):
         DR_status = False
@@ -50,8 +50,8 @@ class SensorDriver(Node):
         self.loginfo("Node 'sensors' running.")
 
         while rclpy.ok():
-            DR_status = not bool(lgpio.gpio_read(self.lgpio, self.DR))
-            DL_status = not bool(lgpio.gpio_read(self.lgpio, self.DL))
+            DR_status = not bool(GPIO.input(self.DR))
+            DL_status = not bool(GPIO.input(self.DL))
 
             DR_message = ObstacleStamped()
             DR_message.header.stamp = self.get_clock().now().to_msg()
@@ -86,26 +86,27 @@ class SensorDriver(Node):
     def analog_read(self):
         value = [0] * (self.numSensors + 1)
         for j in range(0, self.numSensors + 1):
-            lgpio.gpio_write(self.lgpio, self.CS, 0)
+            GPIO.output(self.CS, GPIO.LOW)
             for i in range(0, 4):
                 if (((j) >> (3 - i)) & 0x01):
-                    lgpio.gpio_write(self.lgpio, self.Address, 1)
+                    GPIO.output(self.Address, GPIO.HIGH)
                 else:
-                    lgpio.gpio_write(self.lgpio, self.Address, 0)
+                    GPIO.output(self.Address, GPIO.LOW)
                 value[j] <<= 1
-                if lgpio.gpio_read(self.lgpio, self.DataOut):
+                if GPIO.input(self.DataOut):
                     value[j] |= 0x01
-                lgpio.gpio_write(self.lgpio, self.Clock, 1)
-                lgpio.gpio_write(self.lgpio, self.Clock, 0)
+                GPIO.output(self.Clock, GPIO.HIGH)
+                GPIO.output(self.Clock, GPIO.LOW)
             for i in range(0, 6):
                 value[j] <<= 1
-                if lgpio.gpio_read(self.lgpio, self.DataOut):
+                if GPIO.input(self.DataOut):
                     value[j] |= 0x01
-                lgpio.gpio_write(self.lgpio, self.Clock, 1)
-                lgpio.gpio_write(self.lgpio, self.Clock, 0)
+                GPIO.output(self.Clock, GPIO.HIGH)
+                GPIO.output(self.Clock, GPIO.LOW)
             time.sleep(0.0001)
-            lgpio.gpio_write(self.lgpio, self.CS, 1)
+            GPIO.output(self.CS, GPIO.HIGH)
         return value[1:]
+
 
 def main():
     rclpy.init()
@@ -113,6 +114,7 @@ def main():
     node.run()
     rclpy.shutdown()
     print("Node 'sensors' Stopped")
+
 
 if __name__ == '__main__':
     main()
