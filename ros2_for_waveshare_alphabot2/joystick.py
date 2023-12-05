@@ -43,31 +43,40 @@ class JoystickDriver(Node):
     def run(self):
         self.get_logger().info("Node 'joystick' running.")
         while rclpy.ok():
-            if GPIO.input(self.CTR) == GPIO.LOW:
-                # center
-                while GPIO.input(self.CTR) == GPIO.LOW:
-                    self.pub.publish(String(data="Center"))
-                    self.get_logger().info("Node 'joystick' Center.")
-            elif GPIO.input(self.A) == GPIO.LOW:
-                # up
-                while GPIO.input(self.A) == GPIO.LOW:
-                    self.pub.publish(String(data="Up"))
-                    self.get_logger().info("Node 'joystick' Up.")
-            elif GPIO.input(self.B) == GPIO.LOW:
-                # right
-                while GPIO.input(self.B) == GPIO.LOW:
-                    self.pub.publish(String(data="Right"))
-                    self.get_logger().info("Node 'joystick' Right.")
-            elif GPIO.input(self.C) == GPIO.LOW:
-                # left
-                while GPIO.input(self.C) == GPIO.LOW:
-                    self.pub.publish(String(data="Left"))
-                    self.get_logger().info("Node 'joystick' Left.")
-            elif GPIO.input(self.D) == GPIO.LOW:
-                # down
-                while GPIO.input(self.D) == GPIO.LOW:
-                    self.pub.publish(String(data="Down"))
-                    self.get_logger().info("Node 'joystick' Down.")
+            
+            imput_CTR = GPIO.input(self.CTR)
+            imput_A = GPIO.input(self.A)
+            imput_B = GPIO.input(self.B)
+            imput_C = GPIO.input(self.C)
+            imput_D = GPIO.input(self.D)
+
+            self.get_logger().info("Center" + imput_CTR + ' | A' + imput_A + ' | B' + imput_B + ' | C' + imput_C + ' | D' + imput_D)
+            
+            # if GPIO.input(self.CTR) == GPIO.LOW:
+            #     # center
+            #     while GPIO.input(self.CTR) == GPIO.LOW:
+            #         self.pub.publish(String(data="Center"))
+            #         self.get_logger().info("Node 'joystick' Center.")
+            # elif GPIO.input(self.A) == GPIO.LOW:
+            #     # up
+            #     while GPIO.input(self.A) == GPIO.LOW:
+            #         self.pub.publish(String(data="Up"))
+            #         self.get_logger().info("Node 'joystick' Up.")
+            # elif GPIO.input(self.B) == GPIO.LOW:
+            #     # right
+            #     while GPIO.input(self.B) == GPIO.LOW:
+            #         self.pub.publish(String(data="Right"))
+            #         self.get_logger().info("Node 'joystick' Right.")
+            # elif GPIO.input(self.C) == GPIO.LOW:
+            #     # left
+            #     while GPIO.input(self.C) == GPIO.LOW:
+            #         self.pub.publish(String(data="Left"))
+            #         self.get_logger().info("Node 'joystick' Left.")
+            # elif GPIO.input(self.D) == GPIO.LOW:
+            #     # down
+            #     while GPIO.input(self.D) == GPIO.LOW:
+            #         self.pub.publish(String(data="Down"))
+            #         self.get_logger().info("Node 'joystick' Down.")
 
             self.rate.sleep()
 
