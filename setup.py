@@ -15,6 +15,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         # Include all launch files.
         (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.py')))
+        ('libexec/ros2_for_waveshare_alphabot2', glob(os.path.join('libexec', '*')))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
