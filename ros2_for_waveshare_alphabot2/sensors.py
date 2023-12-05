@@ -29,7 +29,7 @@ class SensorDriver(Node):
         GPIO.setup(self.CS, GPIO.OUT)
         GPIO.setup(self.DataOut, GPIO.IN, GPIO.PUD_UP)
 
-        self.rate = self.create_rate(self.get_parameter_or('~rate', 10).value)
+        self.rate = self.create_rate(self.get_parameter_or('~rate', 10))
 
         # Setup publisher for obstacle detection
         self.pub_right = self.create_publisher(ObstacleStamped, 'obstacle_right', 4)

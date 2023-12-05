@@ -14,9 +14,9 @@ class LedDriver:
         self.node = rclpy.create_node("rgb_leds_driver")
         self.node.loginfo("Node 'rgb_leds' configuring driver.")
 
-        self.rate = self.node.create_rate(self.node.get_parameter('~rate').value, 'rgb_leds')
-        self.server_address = self.node.get_parameter('~server_address').value
-        self.server_port = self.node.get_parameter('~server_port').value
+        self.rate = self.node.create_rate(self.node.get_parameter('~rate'), 'rgb_leds')
+        self.server_address = self.node.get_parameter('~server_address')
+        self.server_port = self.node.get_parameter('~server_port')
 
         # Setup subscriber for rgb_led message
         self.subscriber = self.node.create_subscription(

@@ -96,10 +96,10 @@ class MotionDriver(Node):
         self.loginfo("Node 'motion' GPIO configured.")
 
         self._last_received = self.get_time()
-        self._timeout = self.get_parameter_or('timeout', 2).value
-        self.rate = self.create_rate(self.get_parameter_or('rate', 10).value)
-        self._max_speed = self.get_parameter_or('max_speed', 0.25).value
-        self._wheel_base = self.get_parameter_or('wheel_base', 0.093).value
+        self._timeout = self.get_parameter_or('timeout', 2)
+        self.rate = self.create_rate(self.get_parameter_or('rate', 10))
+        self._max_speed = self.get_parameter_or('max_speed', 0.25)
+        self._wheel_base = self.get_parameter_or('wheel_base', 0.093)
         self._left_motor = Motor(self.IN1, self.IN2)
         self._right_motor = Motor(self.IN3, self.IN4)
         self._left_speed_percent = 0

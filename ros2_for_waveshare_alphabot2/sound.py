@@ -16,7 +16,7 @@ class SoundDriver(Node):
         GPIO.setwarnings(False)
         GPIO.setup(BUZ, GPIO.OUT)
 
-        self.rate = self.create_rate(self.get_parameter_or('~rate', 10).value)
+        self.rate = self.create_rate(self.get_parameter_or('~rate', 10))
 
         # Setup subscriber for buzzer message
         self.create_subscription(Float32, 'buzzer', self.buzzer_callback, 10)

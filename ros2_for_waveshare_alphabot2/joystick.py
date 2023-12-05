@@ -31,7 +31,7 @@ class JoystickDriver(Node):
         GPIO.setup(self.C, GPIO.IN, GPIO.PUD_UP)
         GPIO.setup(self.D, GPIO.IN, GPIO.PUD_UP)
 
-        self.rate = self.create_rate(self.get_parameter_or('~rate', 10).value)
+        self.rate = self.create_rate(self.get_parameter_or('~rate', 10))
 
         # Setup publisher for joystick
         self.pub = self.create_publisher(String, 'joystick', 4)
@@ -72,10 +72,12 @@ class JoystickDriver(Node):
             self.rate.sleep()
 
 def main():
-    rclpy.init()
+    rclpy.init(args=args)
+    node = JoystickDriver()
     try:
-        rclpy.spin(JoystickDriver())
+        node.run()
     finally:
+        node.__del__()
         rclpy.shutdown()
 
 if __name__ == '__main__':

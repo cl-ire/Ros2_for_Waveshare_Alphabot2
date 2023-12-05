@@ -15,14 +15,14 @@ setup(
     zip_safe=True,
     maintainer='Claire Schubert',
     maintainer_email='ubuntu@todo.todo',
-    description='',
+    description='Ros2 node for for the Waveshare Alphabot 2',
     license='TODO: License declaration',
     tests_require=['pytest'],
     
     package_data={
         package_name: [
             'msg/*.msg',
-            'launch/*.py'
+            'launch/*.py',
         ],
     },
 
@@ -38,4 +38,15 @@ setup(
             'alphabot2_test = ros2_for_waveshare_alphabot2.test:main',
         ],
     },
+     scripts=[
+        'ros2_for_waveshare_alphabot2/ir_control.py',
+        'ros2_for_waveshare_alphabot2/joystick.py',
+        'ros2_for_waveshare_alphabot2/motion.py',
+        'ros2_for_waveshare_alphabot2/pan_tilt.py',
+        'ros2_for_waveshare_alphabot2/rgb_leds.py',
+        'ros2_for_waveshare_alphabot2/sensors.py',
+        'ros2_for_waveshare_alphabot2/sound.py',
+        'ros2_for_waveshare_alphabot2/test.py',
+    ],
+    include_package_data=True,
 )

@@ -14,7 +14,7 @@ class IRDriver(Node):
         
         self.get_logger().info("Node 'ir_control' configuring driver.")
         
-        self.rate = self.create_rate(self.get_parameter_or('~rate', 10).value)
+        self.rate = self.create_rate(self.get_parameter_or('~rate', 10))
 
         try:
             self.lirc_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)

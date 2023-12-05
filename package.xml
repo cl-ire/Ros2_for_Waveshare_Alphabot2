@@ -3,13 +3,22 @@
 <package format="3">
   <name>ros2_for_waveshare_alphabot2</name>
   <version>0.0.0</version>
-  <description>ros2_for_waveshare_alphabot2</description>
+  <description>Ros2 node for for the Waveshare Alphabot 2</description>
   <maintainer email="ubuntu@todo.todo">Claire Schubert</maintainer>
   <license>TODO: License declaration</license>
 
   <exec_depend>rclpy</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>  
+  <exec_depend>RPi.GPIO</exec_depend>
+  <exec_depend>socket</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>time</exec_depend>
+  <exec_depend>math</exec_depend>
+  <exec_depend>smbus</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>tf2_geometry_msgs</exec_depend>
+  <exec_depend>requests</exec_depend>
 
   
   <test_depend>ament_copyright</test_depend>
