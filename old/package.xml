@@ -1,25 +1,44 @@
-<package>
-  <name>Ros2_for_Waveshare_Alphabot2</name>
-  <version>0.1.0</version>
-  <description>Waveshare Alphabot 2 Raspberry Pi powered robot.</description>
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3" xmlns:ament_python="http://ament.org/schema/ament_python">
+  <name>ros2_for_waveshare_alphabot2</name>
+  <version>0.0.0</version>
+  <description>Camera Subscriber for the topic /image_raw form the v4l2_camera_node </description>
   <maintainer email="ubuntu@todo.todo">Claire Schubert</maintainer>
   <license>TODO: License declaration</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>ament_python</exec_depend>
+
+  <build_depend>ament_python</build_depend>
   
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
 
-  <build_depend>roscpp</build_depend>
-  <build_depend>message_generation</build_depend>
-  <build_depend>rospy</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>sensor_msgs</build_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
 
-  <run_depend>roscpp</run_depend>
-  <run_depend>rosserial_python</run_depend>
-  <run_depend>message_runtime</run_depend>
-  <run_depend>rospy</run_depend>
-  <run_depend>std_msgs</run_depend>
-  <run_depend>sensor_msgs</run_depend>
+  <build_depend>rosidl_default_generators</build_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
 
   <export>
-    <architecture_independent/>
+    <build_type>ament_python</build_type>
+    <ament_python:entry_points>
+        ir_control = ros2_for_waveshare_alphabot2.ir_control:main
+        joystick = ros2_for_waveshare_alphabot2.joystick:main
+        motion = ros2_for_waveshare_alphabot2.motion:main
+        pan_tilt = ros2_for_waveshare_alphabot2.pan_tilt:main
+        rgb_leds = ros2_for_waveshare_alphabot2.rgb_leds:main
+        sensors = ros2_for_waveshare_alphabot2.sensors:main
+        sound = ros2_for_waveshare_alphabot2.sound:main
+        alphabot2_test = ros2_for_waveshare_alphabot2.test:main
+    </ament_python:entry_points>
+    <libexec_directory>lib/ros2_for_waveshare_alphabot2</libexec_directory>
   </export>
 </package>
