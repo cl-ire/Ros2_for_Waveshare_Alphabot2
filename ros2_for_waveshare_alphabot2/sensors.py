@@ -50,8 +50,8 @@ class SensorDriver(Node):
         self.loginfo("Node 'sensors' running.")
 
         while rclpy.ok():
-            DR_status = not bool(lgpio.gpio_read(self.lgpio, self.DR))
-            DL_status = not bool(lgpio.gpio_read(self.lgpio, self.DL))
+            DR_status = not bool(lgpio.gpio_read(self.lgpio, self.DR, lgpio.PI_PUD_DOWN))
+            DL_status = not bool(lgpio.gpio_read(self.lgpio, self.DL, lgpio.PI_PUD_DOWN))
 
             DR_message = ObstacleStamped()
             DR_message.header.stamp = self.get_clock().now().to_msg()

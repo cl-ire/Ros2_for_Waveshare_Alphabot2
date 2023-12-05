@@ -27,11 +27,11 @@ class JoystickDriver(Node):
         self.lgpio = lgpio.gpiochip_open(0)
         
         # Set the GPIO pins as inputs with pull-up resistors
-        lgpio.gpio_claim_input(self.lgpio, self.CTR)
-        lgpio.gpio_claim_input(self.lgpio, self.A)
-        lgpio.gpio_claim_input(self.lgpio, self.B)
-        lgpio.gpio_claim_input(self.lgpio, self.C)
-        lgpio.gpio_claim_input(self.lgpio, self.D)
+        lgpio.gpio_claim_input(self.lgpio, self.CTR, lgpio.PI_PUD_DOWN)
+        lgpio.gpio_claim_input(self.lgpio, self.A, lgpio.PI_PUD_DOWN)
+        lgpio.gpio_claim_input(self.lgpio, self.B, lgpio.PI_PUD_DOWN)
+        lgpio.gpio_claim_input(self.lgpio, self.C, lgpio.PI_PUD_DOWN)
+        lgpio.gpio_claim_input(self.lgpio, self.D, lgpio.PI_PUD_DOWN)
 
         self.rate = self.create_rate(self.get_parameter_or('~rate', 10))
 
