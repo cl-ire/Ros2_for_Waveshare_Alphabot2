@@ -156,11 +156,16 @@ class CameraPanTiltDriver(Node):
     def pan_tilt_callback(self, message):
         self.get_logger().info("Node 'camera_pan_tilt' message received.")
 
+        self.Position.append(message.data)
+		
+        self.message_pan = self.Position[0]
+        self.message_tilt = self.Position[1]
+
         # limit the servo pan
-        self.pan = min(message.data[0], self.pan_limit_left) if message.data[0] >= 0 else max(message.data[0], -self.pan_limit_right)
+        self.pan = min(self.message_pan, self.pan_limit_left) if self.message_pan >= 0 else max(self.message_pan, -self.pan_limit_right)
 
         # Limit the servo tilt
-        self.tilt = min(message.data[1], self.tilt_limit_up) if message.data[1] >= 0 else max(message.data[1], -self.tilt_limit_down)
+        self.tilt = min(self.message_tilt, self.tilt_limit_up) if self.message_tilt >= 0 else max(self.message_tilt, -self.tilt_limit_down)
 
         self.get_logger().info(f"Node 'camera_pan_tilt' Pan = {self.pan}.")
         self.get_logger().info(f"Node 'camera_pan_tilt' Tilt = {self.tilt}.")
