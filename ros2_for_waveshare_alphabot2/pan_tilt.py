@@ -89,8 +89,7 @@ class CameraPanTiltDriver(Node):
         super().__init__('camera_pan_tilt_driver')
         self.get_logger().info("Node 'camera_pan_tilt' configuring driver")
 
-        self.rate = self.create_rate(self.get_parameter('rate').get_parameter_value().integer_value, 'camera_pan_tilt_driver')
-
+        
         self.pwm = PCA9685(0x40)
         self.pwm.setPWMFreq(50)
 
@@ -145,7 +144,6 @@ class CameraPanTiltDriver(Node):
                 "servoPan"
             )
 
-            self.rate.sleep()
 
     def pan_tilt_callback(self, message):
         self.get_logger().info("Node 'camera_pan_tilt' message received.")
