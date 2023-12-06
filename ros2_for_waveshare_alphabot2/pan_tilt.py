@@ -78,7 +78,7 @@ class PCA9685:
 	def setServoPulse(self, channel, pulse):
 		# Sets the Servo Pulse,The PWM frequency must be 50HZ
 		pulse = pulse*4096/20000				#PWM frequency is 50HZ,the period is 20000us
-		self.setPWM(channel, 0, pulse)
+		self.setPWM(channel, 0, int(pulse))
 
 	# def __del__(self):
 	# 	self.write(self.__MODE1, 0x00)
@@ -134,22 +134,22 @@ class CameraPanTiltDriver(Node):
 
         while rclpy.ok():
             # Send Pan tf
-            self.tf_broadcaster.sendTransform(
-                (0.0, 0.0, 0.0),
-                tf2_geometry_msgs.transformations.quaternion_from_euler(0.0, 0.0, self.pan),
-                self.get_clock().now().to_msg(),
-                "servoPan",
-                "servoPanNeck"
-            )
+            # self.tf_broadcaster.sendTransform(
+            #     (0.0, 0.0, 0.0),
+            #     tf2_geometry_msgs.transformations.quaternion_from_euler(0.0, 0.0, self.pan),
+            #     self.get_clock().now().to_msg(),
+            #     "servoPan",
+            #     "servoPanNeck"
+            # )
 
-            # Send Tilt tf
-            self.tf_broadcaster.sendTransform(
-                (0.0, 0.0, 0.0),
-                tf2_geometry_msgs.transformations.quaternion_from_euler(0.0, self.tilt, 0.0),
-                self.get_clock().now().to_msg(),
-                "servoTilt",
-                "servoPan"
-            )
+            # # Send Tilt tf
+            # self.tf_broadcaster.sendTransform(
+            #     (0.0, 0.0, 0.0),
+            #     tf2_geometry_msgs.transformations.quaternion_from_euler(0.0, self.tilt, 0.0),
+            #     self.get_clock().now().to_msg(),
+            #     "servoTilt",
+            #     "servoPan"
+            #)
 
 
 
