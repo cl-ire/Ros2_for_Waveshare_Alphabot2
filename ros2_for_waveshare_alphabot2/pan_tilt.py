@@ -2,9 +2,8 @@
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Header
+from std_msgs.msg import Header, Float32MultiArray
 from geometry_msgs.msg import TransformStamped
-from ros2_for_waveshare_alphabot2.msg import PanTilt
 
 import time
 import math
@@ -119,7 +118,7 @@ class CameraPanTiltDriver(Node):
         self.pwm.setServoPulse(0, self.HPulse)
         self.pwm.setServoPulse(1, self.VPulse)
 
-        self.subscription = self.create_subscription(PanTilt, 'pan_tilt', self.pan_tilt_callback, 10)
+        self.subscription = self.create_subscription(Float32MultiArray, 'pan_tilt', self.pan_tilt_callback, 10)
 
         self.tf_broadcaster = TransformBroadcaster(self)
 
@@ -152,10 +151,10 @@ class CameraPanTiltDriver(Node):
         self.get_logger().info("Node 'camera_pan_tilt' message received.")
 
         # limit the servo pan
-        self.pan = min(message.pan, self.pan_limit_left) if message.pan >= 0 else max(message.pan, -self.pan_limit_right)
+        self.pan = min(message.pan, self.pan_limit_left) if message[1] >= 0 else max(message.pan, -self.pan_limit_right)
 
         # Limit the servo tilt
-        self.tilt = min(message.tilt, self.tilt_limit_up) if message.tilt >= 0 else max(message.tilt, -self.tilt_limit_down)
+        self.tilt = min(message.tilt, self.tilt_limit_up) if message[2] >= 0 else max(message.tilt, -self.tilt_limit_down)
 
         self.get_logger().info(f"Node 'camera_pan_tilt' Pan = {self.pan}.")
         self.get_logger().info(f"Node 'camera_pan_tilt' Tilt = {self.tilt}.")

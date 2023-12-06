@@ -2,10 +2,9 @@ import rclpy
 from rclpy.node import Node
 import time
 from sensor_msgs.msg import Image
-from std_msgs.msg import String, Int32MultiArray, Float32
+from std_msgs.msg import String, Int32MultiArray, Float32, Float32MultiArray
 from geometry_msgs.msg import Twist
 
-from ros2_for_waveshare_alphabot2.msg import PanTilt, IR, RGBLED
 
 
 class MovementTest(Node):
@@ -20,32 +19,32 @@ class MovementTest(Node):
         self.subscription
 
         # Message publishers
-        self.pantilt_pub = self.create_publisher(PanTilt, 'pan_tilt', 4)
+        self.pantilt_pub = self.create_publisher(Float32MultiArray, 'pan_tilt', 4)
 
 
 
     def listener_callback(self, msg):
         # Messages
-        pantilt_msg = PanTilt()
+        pantilt_msg = Float32MultiArray()
         imput = msg.data
         self.get_logger().info("Imput recived: {}".format(imput)) 
         
 
         if imput == String(data="Center"):
-            pantilt_msg.pan = 0.0
-            pantilt_msg.tilt = 0.0
+            pantilt_msg[1] = 0.0
+            pantilt_msg[2] = 0.0
         elif imput == String(data="Up"):
-            pantilt_msg.pan = 0.0
-            pantilt_msg.tilt = 1.0
+            pantilt_msg[1] = 0.0
+            pantilt_msg[2] = 1.0
         elif imput == String(data="Right"):
-            pantilt_msg.pan = 1.0
-            pantilt_msg.tilt = 0.0
+            pantilt_msg[1] = 1.0
+            pantilt_msg[2] = 0.0
         elif imput == String(data="Left"):
-            pantilt_msg.pan = -1.0
-            pantilt_msg.tilt = 0.0
+            pantilt_msg[1] = -1.0
+            pantilt_msg[2] = 0.0
         elif imput == String(data="Down"):
-            pantilt_msg.pan = 0.0
-            pantilt_msg.tilt = -1.0
+            pantilt_msg[1] = 0.0
+            pantilt_msg[2] = -1.0
 
         self.pantilt_pub.publish(pantilt_msg)
         time.sleep(0.2)
