@@ -18,18 +18,7 @@ from tf2_ros import TransformBroadcaster
 
 class PCA9685:
 		
-	def __init__(self, address=0x40, debug=False):
-		self.get_logger().info("Node 'camera_pan_tilt' configuring PCA9685")
-
-		self.bus = smbus.SMBus(1)
-		self.get_logger().info("SMBus " + self.bus)
-		self.address = address
-		self.debug = debug
-		self.get_logger().info("Node 'camera_pan_tilt' Reseting PCA9685")
-		self.write(self.__MODE1, 0x00)
-		self.get_logger().info("Node 'camera_pan_tilt' PCA9685 configured")
-	
-    # Registers/etc.
+	# Registers/etc.
 	__SUBADR1		= 0x02
 	__SUBADR2		= 0x03
 	__SUBADR3		= 0x04
@@ -44,6 +33,18 @@ class PCA9685:
 	__ALLLED_OFF_L	= 0xFC
 	__ALLLED_OFF_H	= 0xFD
 
+
+	def __init__(self, address=0x40, debug=False):
+		self.get_logger().info("Node 'camera_pan_tilt' configuring PCA9685")
+
+		self.bus = smbus.SMBus(1)
+		self.get_logger().info("SMBus " + self.bus)
+		self.address = address
+		self.debug = debug
+		self.get_logger().info("Node 'camera_pan_tilt' Reseting PCA9685")
+		self.write(self.__MODE1, 0x00)
+		self.get_logger().info("Node 'camera_pan_tilt' PCA9685 configured")
+		
 	def write(self, reg, value):
 		self.bus.write_byte_data(self.address, reg, value)
 			
