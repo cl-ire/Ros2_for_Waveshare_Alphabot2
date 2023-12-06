@@ -34,10 +34,11 @@ class PCA9685:
 	__ALLLED_OFF_H	= 0xFD
 
 
-	def __init__(self, bus, address=0x40, debug=False):
+	def __init__(self, address=0x40, debug=False):
 		self.get_logger().info("Node 'camera_pan_tilt' configuring PCA9685")
 
-		self.bus = bus
+		self.bus = smbus.SMBus(1)
+		self.get_logger().info("SMBus " + self.bus)
 		self.address = address
 		self.debug = debug
 		self.get_logger().info("Node 'camera_pan_tilt' Reseting PCA9685")
@@ -89,9 +90,8 @@ class CameraPanTiltDriver(Node):
         super().__init__('camera_pan_tilt_driver')
         self.get_logger().info("Node 'camera_pan_tilt' configuring driver")
 
-        bus = smbus.SMBus(1)
         
-        self.pwm = PCA9685(bus, 0x40)
+        self.pwm = PCA9685(0x40)
         self.pwm.setPWMFreq(50)
 
         self.pan_offset = self.get_parameter('pan_offset').get_parameter_value().double_value
