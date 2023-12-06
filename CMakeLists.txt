@@ -39,7 +39,7 @@ install(DIRECTORY urdf
   DESTINATION share/${PROJECT_NAME}/
 )
 
-# Install scripts with unique custom target names
+# Install scripts
 install(PROGRAMS
   ros2_for_waveshare_alphabot2/ir_control.py
   ros2_for_waveshare_alphabot2/joystick.py
@@ -53,7 +53,11 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# Add a custom target prefix to avoid naming conflicts
-set_custom_target_prefix(${PROJECT_NAME}_)
+# Set custom target properties
+set_target_properties(
+  "${PROJECT_NAME}_node"
+  PROPERTIES
+  PREFIX ""
+)
 
 ament_package()
