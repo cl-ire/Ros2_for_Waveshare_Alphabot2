@@ -36,17 +36,9 @@ setup(
             'sensors = ros2_for_waveshare_alphabot2.sensors:main',
             'sound = ros2_for_waveshare_alphabot2.sound:main',
             'alphabot2_test = ros2_for_waveshare_alphabot2.test:main',
+            'alphabot2_test2 = ros2_for_waveshare_alphabot2.test2:main',
         ],
     },
-     scripts=[
-        'ros2_for_waveshare_alphabot2/ir_control.py',
-        'ros2_for_waveshare_alphabot2/joystick.py',
-        'ros2_for_waveshare_alphabot2/motion.py',
-        'ros2_for_waveshare_alphabot2/pan_tilt.py',
-        'ros2_for_waveshare_alphabot2/rgb_leds.py',
-        'ros2_for_waveshare_alphabot2/sensors.py',
-        'ros2_for_waveshare_alphabot2/sound.py',
-        'ros2_for_waveshare_alphabot2/test.py',
-    ],
+    
     include_package_data=True,
 )
