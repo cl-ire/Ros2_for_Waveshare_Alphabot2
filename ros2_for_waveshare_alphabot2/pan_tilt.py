@@ -22,12 +22,12 @@ class PCA9685:
 		self.get_logger().info("Node 'camera_pan_tilt' configuring PCA9685")
 
 		self.bus = smbus.SMBus(1)
-		self.get_logger().info("SMBus " + self.bus)
+		# self.get_logger().info("SMBus " + self.bus)
 		self.address = address
 		self.debug = debug
-		self.get_logger().info("Node 'camera_pan_tilt' Reseting PCA9685")
+		# self.get_logger().info("Node 'camera_pan_tilt' Reseting PCA9685")
 		self.write(self.__MODE1, 0x00)
-		self.get_logger().info("Node 'camera_pan_tilt' PCA9685 configured")
+		# self.get_logger().info("Node 'camera_pan_tilt' PCA9685 configured")
 	
     # Registers/etc.
 	__SUBADR1		= 0x02
