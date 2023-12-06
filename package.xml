@@ -35,10 +35,8 @@
 
   <export>
     <build_type>ament_python</build_type>
-  </export>
-
-  <export>
     <include pattern="launch/*.py"/>
   </export>
+
 
 </package>

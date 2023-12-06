@@ -129,27 +129,27 @@ class CameraPanTiltDriver(Node):
         self.tf_broadcaster = TransformBroadcaster(self)
 
 	
-    def run(self):
-        self.get_logger().info("Node 'pan_tilt' running.")
+    # def run(self):
+    #     self.get_logger().info("Node 'pan_tilt' running.")
 
-        while rclpy.ok():
-            # Send Pan tf
-            # self.tf_broadcaster.sendTransform(
-            #     (0.0, 0.0, 0.0),
-            #     tf2_geometry_msgs.transformations.quaternion_from_euler(0.0, 0.0, self.pan),
-            #     self.get_clock().now().to_msg(),
-            #     "servoPan",
-            #     "servoPanNeck"
-            # )
+    #     while rclpy.ok():
+    #         Send Pan tf
+    #         self.tf_broadcaster.sendTransform(
+    #             (0.0, 0.0, 0.0),
+    #             tf2_geometry_msgs.transformations.quaternion_from_euler(0.0, 0.0, self.pan),
+    #             self.get_clock().now().to_msg(),
+    #             "servoPan",
+    #             "servoPanNeck"
+    #         )
 
-            # # Send Tilt tf
-            # self.tf_broadcaster.sendTransform(
-            #     (0.0, 0.0, 0.0),
-            #     tf2_geometry_msgs.transformations.quaternion_from_euler(0.0, self.tilt, 0.0),
-            #     self.get_clock().now().to_msg(),
-            #     "servoTilt",
-            #     "servoPan"
-            #)
+    #         # Send Tilt tf
+    #         self.tf_broadcaster.sendTransform(
+    #             (0.0, 0.0, 0.0),
+    #             tf2_geometry_msgs.transformations.quaternion_from_euler(0.0, self.tilt, 0.0),
+    #             self.get_clock().now().to_msg(),
+    #             "servoTilt",
+    #             "servoPan"
+    #         )
 
 
 
@@ -176,7 +176,9 @@ class CameraPanTiltDriver(Node):
 def main(args=None):
     rclpy.init(args=args)
     driver = CameraPanTiltDriver()
-    driver.run()
+    # driver.run()
+	rclpy.spin(driver) 
+	driver.destroy_node()
     rclpy.shutdown()
 	
 
