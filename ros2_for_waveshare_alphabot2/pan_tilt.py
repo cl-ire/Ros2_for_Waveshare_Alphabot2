@@ -160,7 +160,11 @@ class CameraPanTiltDriver(Node):
         # self.message_tilt = message.data[1]
 
         # limit the servo pan
-        self.pan = min(self.message_pan, self.pan_limit_left) if self.message_pan >= 0 else max(self.message_pan, -self.pan_limit_right)
+        
+        if float(self.message_pan) >= 0.0:
+            self.pan = min(self.message_pan, self.pan_limit_left)
+        else:
+            self.pan = max(self.message_pan, -self.pan_limit_right)
 
         # Limit the servo tilt
         # self.tilt = min(self.message_tilt, self.tilt_limit_up) if self.message_tilt >= 0 else max(self.message_tilt, -self.tilt_limit_down)
