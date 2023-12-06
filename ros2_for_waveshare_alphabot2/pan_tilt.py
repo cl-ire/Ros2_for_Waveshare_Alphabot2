@@ -177,8 +177,8 @@ def main(args=None):
     rclpy.init(args=args)
     driver = CameraPanTiltDriver()
     # driver.run()
-	rclpy.spin(driver) 
-	driver.destroy_node()
+    rclpy.spin(driver) 
+    driver.destroy_node()
     rclpy.shutdown()
 	
 
