@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Create a new directory
-mkdir -p ~/ros2_ws/src || { echo "Error creating src directory"; exit 1; }
-cd ~/ros2_ws/ || { echo "Error changing directory to ros2_ws"; exit 1; }
+mkdir -p /home/ubuntu/ros2_ws/src || { echo "Error creating src directory"; exit 1; }
+cd /home/ubuntu/ros2_ws/ || { echo "Error changing directory to ros2_ws"; exit 1; }
 
 # Resolve dependencies
 sudo rosdep init || { echo "Error initializing rosdep"; exit 1; }
