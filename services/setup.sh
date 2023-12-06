@@ -5,8 +5,10 @@ mv ~/ros2_ws/src/ros2_for_waveshare_alphabot2/services/wsRGB ~/wsRGB
 mv ~/ros2_ws/src/ros2_for_waveshare_alphabot2/services/setup ~/setup
 
 # make the needed files executable
-chmod +x ~/setup/reinstall.sh
-chmod +x ~/setup/full_reinstall.sh 
+chmod +x ~/setup/reinstall_alphabot.sh
+chmod +x ~/setup/full_reinstall_alphabot.sh 
+chmod +x ~/setup/reinstall_camera.sh
+chmod +x ~/setup/full_reinstall_camera.sh 
 chmod +x ~/setup/create_workspace.sh 
 chmod +x ~/setup/install_ros2_humble.sh 
 
