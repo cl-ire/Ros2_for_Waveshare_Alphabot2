@@ -19,7 +19,7 @@ from tf2_ros import TransformBroadcaster
 class PCA9685:
 		
 	def __init__(self, address=0x40, debug=False):
-		self.get_logger().info("Node 'camera_pan_tilt' configuring PCA9685")
+		# self.get_logger().info("Node 'camera_pan_tilt' configuring PCA9685")
 
 		self.bus = smbus.SMBus(1)
 		# self.get_logger().info("SMBus " + self.bus)
@@ -80,8 +80,8 @@ class PCA9685:
 		pulse = pulse*4096/20000				#PWM frequency is 50HZ,the period is 20000us
 		self.setPWM(channel, 0, pulse)
 
-	def __del__(self):
-		self.write(self.__MODE1, 0x00)
+	# def __del__(self):
+	# 	self.write(self.__MODE1, 0x00)
 
 class CameraPanTiltDriver(Node):
 
@@ -93,12 +93,19 @@ class CameraPanTiltDriver(Node):
         self.pwm = PCA9685(0x40)
         self.pwm.setPWMFreq(50)
 
-        self.pan_offset = self.get_parameter('pan_offset').get_parameter_value().double_value
-        self.tilt_offset = self.get_parameter('tilt_offset').get_parameter_value().double_value
-        self.pan_limit_left = self.get_parameter('pan_limit_left').get_parameter_value().double_value
-        self.pan_limit_right = self.get_parameter('pan_limit_right').get_parameter_value().double_value
-        self.tilt_limit_up = self.get_parameter('tilt_limit_up').get_parameter_value().double_value
-        self.tilt_limit_down = self.get_parameter('tilt_limit_down').get_parameter_value().double_value
+        # self.pan_offset = self.get_parameter('pan_offset').get_parameter_value().double_value
+        # self.tilt_offset = self.get_parameter('tilt_offset').get_parameter_value().double_value
+        # self.pan_limit_left = self.get_parameter('pan_limit_left').get_parameter_value().double_value
+        # self.pan_limit_right = self.get_parameter('pan_limit_right').get_parameter_value().double_value
+        # self.tilt_limit_up = self.get_parameter('tilt_limit_up').get_parameter_value().double_value
+        # self.tilt_limit_down = self.get_parameter('tilt_limit_down').get_parameter_value().double_value
+		
+        self.pan_offset = 0.0
+        self.tilt_offset = 0.0
+        self.pan_limit_left = 1.5
+        self.pan_limit_right = 1.5
+        self.tilt_limit_up = 1.4
+        self.tilt_limit_down = 1.0
 
         self.get_logger().info(f"Node 'camera_pan_tilt' pan_offset = {self.pan_offset}.")
         self.get_logger().info(f"Node 'camera_pan_tilt' tilt_offset = {self.tilt_offset}.")
