@@ -31,20 +31,20 @@ class MovementTest(Node):
         
 
         if imput == String(data="Center"):
+            pantilt_msg[0] = 0.0
             pantilt_msg[1] = 0.0
-            pantilt_msg[2] = 0.0
         elif imput == String(data="Up"):
-            pantilt_msg[1] = 0.0
-            pantilt_msg[2] = 1.0
-        elif imput == String(data="Right"):
+            pantilt_msg[0] = 0.0
             pantilt_msg[1] = 1.0
-            pantilt_msg[2] = 0.0
-        elif imput == String(data="Left"):
-            pantilt_msg[1] = -1.0
-            pantilt_msg[2] = 0.0
-        elif imput == String(data="Down"):
+        elif imput == String(data="Right"):
+            pantilt_msg[0] = 1.0
             pantilt_msg[1] = 0.0
-            pantilt_msg[2] = -1.0
+        elif imput == String(data="Left"):
+            pantilt_msg[0] = -1.0
+            pantilt_msg[1] = 0.0
+        elif imput == String(data="Down"):
+            pantilt_msg[0] = 0.0
+            pantilt_msg[1] = -1.0
 
         self.pantilt_pub.publish(pantilt_msg)
         time.sleep(0.2)
