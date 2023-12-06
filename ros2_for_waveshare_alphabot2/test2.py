@@ -19,7 +19,7 @@ class MovementTest(Node):
         self.subscription
 
         # Message publishers
-        self.pantilt_pub = self.create_publisher(Float32, 'pan_tilt', 4)
+        self.pantilt_pub = self.create_publisher(String, 'pan_tilt', 4)
 
 
 
@@ -31,15 +31,15 @@ class MovementTest(Node):
         
 
         if imput == String(data="Center"):
-            pantilt_msg = 0.0
+            pantilt_msg = String(data="0.0")
         elif imput == String(data="Up"):
-            pantilt_msg = 0.0            
+            pantilt_msg = String(data="0.0")            
         elif imput == String(data="Right"):
-            pantilt_msg = 1.0            
+            pantilt_msg = String(data="1.0")            
         elif imput == String(data="Left"):
-            pantilt_msg = -1.0            
+            pantilt_msg = String(data="-1.0")            
         elif imput == String(data="Down"):
-            pantilt_msg = 0.0
+            pantilt_msg = String(data="0.0")
             
 
         self.pantilt_pub.publish(pantilt_msg)
