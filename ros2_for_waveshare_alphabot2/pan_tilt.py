@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Header, Float32MultiArray
+from std_msgs.msg import Header, Float32MultiArray, Float32
 from geometry_msgs.msg import TransformStamped
 
 import time
@@ -124,7 +124,7 @@ class CameraPanTiltDriver(Node):
         self.pwm.setServoPulse(0, self.HPulse)
         self.pwm.setServoPulse(1, self.VPulse)
 
-        self.subscription = self.create_subscription(Float32MultiArray, 'pan_tilt', self.pan_tilt_callback, 10)
+        self.subscription = self.create_subscription(Float32, 'pan_tilt', self.pan_tilt_callback, 10)
 
         self.tf_broadcaster = TransformBroadcaster(self)
 
@@ -156,23 +156,23 @@ class CameraPanTiltDriver(Node):
     def pan_tilt_callback(self, message):
         self.get_logger().info("Node 'camera_pan_tilt' message received.")
 		
-        self.message_pan = message.data[0]
-        self.message_tilt = message.data[1]
+        self.message_pan = message
+        # self.message_tilt = message.data[1]
 
         # limit the servo pan
         self.pan = min(self.message_pan, self.pan_limit_left) if self.message_pan >= 0 else max(self.message_pan, -self.pan_limit_right)
 
         # Limit the servo tilt
-        self.tilt = min(self.message_tilt, self.tilt_limit_up) if self.message_tilt >= 0 else max(self.message_tilt, -self.tilt_limit_down)
+        # self.tilt = min(self.message_tilt, self.tilt_limit_up) if self.message_tilt >= 0 else max(self.message_tilt, -self.tilt_limit_down)
 
         self.get_logger().info(f"Node 'camera_pan_tilt' Pan = {self.pan}.")
-        self.get_logger().info(f"Node 'camera_pan_tilt' Tilt = {self.tilt}.")
+        # self.get_logger().info(f"Node 'camera_pan_tilt' Tilt = {self.tilt}.")
 
         # Convert from radians to pulses (500 - 2500)
         self.HPulse = int(self.pan * (1000 / (math.pi / 2)) + self.pan_center_pulse)
-        self.VPulse = int(self.tilt * (1000 / (math.pi / 2)) + self.tilt_center_pulse)
+        # self.VPulse = int(self.tilt * (1000 / (math.pi / 2)) + self.tilt_center_pulse)
 
-        self.pwm.setServoPulse(1, self.VPulse)
+        # self.pwm.setServoPulse(1, self.VPulse)
         self.pwm.setServoPulse(0, self.HPulse)
 
 

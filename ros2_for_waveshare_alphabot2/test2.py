@@ -19,30 +19,27 @@ class MovementTest(Node):
         self.subscription
 
         # Message publishers
-        self.pantilt_pub = self.create_publisher(Float32MultiArray, 'pan_tilt', 4)
+        self.pantilt_pub = self.create_publisher(Float32, 'pan_tilt', 4)
 
 
 
     def listener_callback(self, msg):
         # Messages
-        pantilt_msg = Float32MultiArray()
+        pantilt_msg = Float32()
         imput = msg.data
         self.get_logger().info("Imput recived: {}".format(imput)) 
         
 
         if imput == String(data="Center"):
-            pantilt_msg.data = [0.0, 0.0]
+            pantilt_msg = 0.0
         elif imput == String(data="Up"):
-            pantilt_msg.data = [0.0, 1.0]
-            
+            pantilt_msg = 0.0            
         elif imput == String(data="Right"):
-            pantilt_msg.data = [1.0, 0.0]
-            
+            pantilt_msg = 1.0            
         elif imput == String(data="Left"):
-            pantilt_msg.data = [-1.0, 0.0]
-            
+            pantilt_msg = -1.0            
         elif imput == String(data="Down"):
-            pantilt_msg.data = [0.0, -1.0]
+            pantilt_msg = 0.0
             
 
         self.pantilt_pub.publish(pantilt_msg)
