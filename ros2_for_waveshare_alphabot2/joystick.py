@@ -44,6 +44,7 @@ class JoystickDriver(Node):
         self.get_logger().info("Node 'joystick' running.")
         
         imput_last = String(data="No Imput jet")
+        imput = String(data="No Imput jet")
         while rclpy.ok():
             
             # imput_CTR = GPIO.input(self.CTR)

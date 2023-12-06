@@ -36,16 +36,16 @@ class MovementTest(Node):
             pantilt_msg.tilt = 0.0
         elif imput == String(data="Up"):
             pantilt_msg.pan = 0.0
-            pantilt_msg.tilt = 0.0
+            pantilt_msg.tilt = 1.0
         elif imput == String(data="Right"):
-            pantilt_msg.pan = 0.0
+            pantilt_msg.pan = 1.0
             pantilt_msg.tilt = 0.0
         elif imput == String(data="Left"):
-            pantilt_msg.pan = 0.0
+            pantilt_msg.pan = -1.0
             pantilt_msg.tilt = 0.0
         elif imput == String(data="Down"):
             pantilt_msg.pan = 0.0
-            pantilt_msg.tilt = 0.0
+            pantilt_msg.tilt = -1.0
 
         self.pantilt_pub.publish(pantilt_msg)
         time.sleep(0.2)
