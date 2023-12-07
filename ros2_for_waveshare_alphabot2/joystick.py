@@ -65,12 +65,13 @@ class JoystickDriver(Node):
                 imput = String(data="Left")
             elif GPIO.input(self.D) == GPIO.LOW:
                 imput = String(data="Down")
-            # else:
-            #     imput = String(data="No Imput")
+            else:
+                imput = String(data="No Imput")
 
             if imput != imput_last:
-                self.pub.publish(imput)
-                self.get_logger().info("Node 'joystick' {}".format(imput.data))
+                if imput != String(data="No Imput"):
+                    self.pub.publish(imput)
+                    self.get_logger().info("Node 'joystick' {}".format(imput.data))
                 imput_last = imput
 
 def main():
