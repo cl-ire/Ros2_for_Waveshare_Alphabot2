@@ -28,7 +28,6 @@ class MovementTest(Node):
         imput = msg.data
         self.get_logger().info("Imput recived: {}".format(imput)) 
         
-        servo_msg = [0, 0]
 
         if imput == "Center":
             servo_msg = [0, 0]

@@ -5,10 +5,6 @@ import math
 import smbus
 
 
-# Camera Pan
-# Camera Tilt
-
-
 class PCA9685:      # https://www.kampis-elektroecke.de/raspberry-pi/raspberry-pi-i2c/servo/
 		
 	def __init__(self, offset, limit_left, limit_right, address=0x40, debug=False):
@@ -80,8 +76,8 @@ class PCA9685:      # https://www.kampis-elektroecke.de/raspberry-pi/raspberry-p
 
 		
 		angle = 7.5 - ((angle) * 0.055)
-		pulse = int(4096.0 / 100.0 * angle)				
-		self.setPWM(channel, 0, int(pulse))		
+		pulse = int(4096.0 / 100.0 * angle)
+		self.setPWM(channel, 0, int(pulse))
 
 	# def __del__(self):
 	# 	self.write(self.__MODE1, 0x00)
