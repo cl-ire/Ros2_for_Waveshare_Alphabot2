@@ -28,6 +28,8 @@ class MovementTest(Node):
         imput = msg.data
         self.get_logger().info("Imput recived: {}".format(imput)) 
         
+        servo_msg = [0, 0]
+        last_servo_msg = [0, 0]
 
         if imput == String(data="Center"):
             servo_msg = [0, 0]
@@ -42,9 +44,11 @@ class MovementTest(Node):
 
         servo_msg_sent = Int32MultiArray()
         
-        servo_msg_sent.data = servo_msg
-
-        self.servo_pub.publish(servo_msg_sent)
+        if servo_msg != last_servo_msg:
+            servo_msg_sent.data = servo_msg
+            self.servo_pub.publish(servo_msg_sent)
+            last_servo_msg = servo_msg
+                
         time.sleep(0.2)
 
 

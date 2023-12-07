@@ -70,7 +70,7 @@ class JoystickDriver(Node):
 
             if imput != imput_last:
                 self.pub.publish(imput)
-                self.get_logger().info("Node 'joystick' {}".format(imput))
+                self.get_logger().info("Node 'joystick' {}".format(imput.data))
                 imput_last = imput
 
 def main():
