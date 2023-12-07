@@ -53,8 +53,7 @@ class MovementTest(Node):
         self.get_logger().info("Data sent to Servo: {}".format(self.servo_msg_hold))
         servo_msg_sent.data = self.servo_msg_hold
         self.servo_pub.publish(servo_msg_sent)
-            
-                
+                        
         time.sleep(0.2)
 
 
