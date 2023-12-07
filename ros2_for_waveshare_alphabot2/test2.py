@@ -28,17 +28,19 @@ class MovementTest(Node):
         imput = msg.data
         self.get_logger().info("Imput recived: {}".format(imput)) 
         
+        # channel 0 = pan 
+		# channel 1 = tilt
 
         if imput == "Center":
             servo_msg = [0, 0]
         elif imput == "Up":
-            servo_msg = [70, 0]
+            servo_msg = [0, 70]
         elif imput == "Right":
-            servo_msg = [0, 90]
+            servo_msg = [90, 0]
         elif imput == "Left":
-            servo_msg = [0, -90]
+            servo_msg = [-90, 0]
         elif imput == "Down":
-            servo_msg = [-20, 0]
+            servo_msg = [0, -20]
 
         servo_msg_sent = Int32MultiArray()
         

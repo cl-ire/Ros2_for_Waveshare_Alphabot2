@@ -111,7 +111,7 @@ class CameraPanTiltDriver(Node):
 		self.pwm.setServoPulse(0, servo_winkel_0)
 		self.pwm.setServoPulse(1, servo_winkel_1)
 	
-		time.sleep(5)
+		time.sleep(0.2)
 	
 	def setup_servo(self):
 		# channel 0 = pan 
