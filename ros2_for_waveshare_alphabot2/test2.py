@@ -18,6 +18,7 @@ class MovementTest(Node):
             5)                          #queue size amount of the stored mesages  
         self.subscription
 
+        self.servo_msg_hold = [0, 0]
         # Message publishers
         self.servo_pub = self.create_publisher(Int32MultiArray, '/Servo', 4)
 
@@ -30,22 +31,26 @@ class MovementTest(Node):
         
         # channel 0 = pan 
 		# channel 1 = tilt
+        
 
         if imput == "Center":
-            servo_msg = [0, 0]
+            self.servo_msg_hold = [0, 0]
         elif imput == "Up":
-            servo_msg = [0, 70]
+            servo_msg = [0, 5]
         elif imput == "Right":
-            servo_msg = [90, 0]
+            servo_msg = [5, 0]
         elif imput == "Left":
-            servo_msg = [-90, 0]
+            servo_msg = [-5, 0]
         elif imput == "Down":
-            servo_msg = [0, -20]
+            servo_msg = [0, -5]
+
+        self.servo_msg_hold[0] = self.servo_msg_hold[0] + servo_msg[0]
+        self.servo_msg_hold[1] = self.servo_msg_hold[1] + servo_msg[1]
 
         servo_msg_sent = Int32MultiArray()
         
-        self.get_logger().info("Data sent to Servo: {}".format(servo_msg))
-        servo_msg_sent.data = servo_msg
+        self.get_logger().info("Data sent to Servo: {}".format(self.servo_msg_hold))
+        servo_msg_sent.data = self.servo_msg_hold
         self.servo_pub.publish(servo_msg_sent)
             
                 

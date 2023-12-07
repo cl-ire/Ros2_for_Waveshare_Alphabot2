@@ -116,7 +116,7 @@ class CameraPanTiltDriver(Node):
 	def setup_servo(self):
 		# channel 0 = pan 
 		# channel 1 = tilt
-		offset = [0, 0]		
+		offset = [30, 0]		
 		limit_left = [-90, -80]
 		limit_right = [90, 45]
 	
