@@ -29,26 +29,24 @@ class MovementTest(Node):
         self.get_logger().info("Imput recived: {}".format(imput)) 
         
         servo_msg = [0, 0]
-        last_servo_msg = [0, 0]
 
-        if imput == String(data="Center"):
+        if imput == "Center":
             servo_msg = [0, 0]
-        elif imput == String(data="Up"):
+        elif imput == "Up":
             servo_msg = [70, 0]
-        elif imput == String(data="Right"):
+        elif imput == "Right":
             servo_msg = [0, 90]
-        elif imput == String(data="Left"):
+        elif imput == "Left":
             servo_msg = [0, -90]
-        elif imput == String(data="Down"):
+        elif imput == "Down":
             servo_msg = [-20, 0]
 
         servo_msg_sent = Int32MultiArray()
         
-        if servo_msg != last_servo_msg:
-            self.get_logger().info("Data sent to Servo: {}".format(servo_msg))
-            servo_msg_sent.data = servo_msg
-            self.servo_pub.publish(servo_msg_sent)
-            last_servo_msg = servo_msg
+        self.get_logger().info("Data sent to Servo: {}".format(servo_msg))
+        servo_msg_sent.data = servo_msg
+        self.servo_pub.publish(servo_msg_sent)
+            
                 
         time.sleep(0.2)
 
