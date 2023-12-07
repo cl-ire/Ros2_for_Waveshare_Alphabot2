@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import time
 import math
@@ -83,27 +83,15 @@ class PCA9685:      # https://www.kampis-elektroecke.de/raspberry-pi/raspberry-p
 	# 	self.write(self.__MODE1, 0x00)
 
 
-def limit(self, data):
-	self.pan_offset = 0.0
-	self.tilt_offset = 0.0
-	self.pan_limit_left = 1.5
-	self.pan_limit_right = 1.5
-	self.tilt_limit_up = 1.4
-	self.tilt_limit_down = 1.0
+def main(args=None):
+	# channel 0 = pan 
+	# channel 1 = tilt
+	offset = [0, 0]		
+	limit_left = [-90, -80]
+	limit_right = [90, 45]
 	
-	# limit the servo pan
-		
-	if float(self.message_pan) >= 0.0:
-		self.pan = min(self.message_pan, self.pan_limit_left)
-	else:
-		self.pan = max(self.message_pan, -self.pan_limit_right)
-
-	# Limit the servo tilt
-	# self.tilt = min(self.message_tilt, self.tilt_limit_up) if self.message_tilt >= 0 else max(self.message_tilt, -self.tilt_limit_down)
-
-
-
-def run(self, pwm):
+	pwm = PCA9685(offset, limit_left, limit_right, 0x40)
+	pwm.setPWMFreq(50)
 	
 	pwm.setServoPulse(0, 0)
 	pwm.setServoPulse(1, 0)
@@ -117,24 +105,6 @@ def run(self, pwm):
 
 	pwm.setServoPulse(0, -45)
 	pwm.setServoPulse(1, -45)
-	
-
-	
-
-def main(args=None):
-	# channel 0 = pan 
-	# channel 1 = tilt
-	offset = [0, 0]		
-	limit_left = [-90, -80]
-	limit_right = [90, 45]
-	
-	pwm = PCA9685(offset, limit_left, limit_right, 0x40)
-	pwm.setPWMFreq(50)
-	
-	run(pwm)
-	
-	
-	
 	
 
 if __name__ == '__main__':

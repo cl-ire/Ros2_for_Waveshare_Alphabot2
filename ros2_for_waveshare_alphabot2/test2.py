@@ -25,7 +25,7 @@ class MovementTest(Node):
 
     def listener_callback(self, msg):
         # Messages
-        pantilt_msg = Float32()
+        pantilt_msg = String()
         imput = msg.data
         self.get_logger().info("Imput recived: {}".format(imput)) 
         

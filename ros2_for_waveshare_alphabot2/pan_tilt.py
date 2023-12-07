@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Header, Float32MultiArray, Float32
+from std_msgs.msg import Header, Float32MultiArray, Float32, String
 from geometry_msgs.msg import TransformStamped
 
 import time
