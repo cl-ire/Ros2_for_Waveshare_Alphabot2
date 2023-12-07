@@ -105,6 +105,16 @@ def main(args=None):
 
 	pwm.setServoPulse(0, -45)
 	pwm.setServoPulse(1, -45)
+
+	time.sleep(5)
+
+	pwm.setServoPulse(0, 90)
+	pwm.setServoPulse(1, 90)
+
+	time.sleep(5)
+
+	pwm.setServoPulse(0, 0)
+	pwm.setServoPulse(1, 0)
 	
 
 if __name__ == '__main__':
