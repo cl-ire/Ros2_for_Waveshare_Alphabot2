@@ -45,6 +45,7 @@ class MovementTest(Node):
         servo_msg_sent = Int32MultiArray()
         
         if servo_msg != last_servo_msg:
+            self.get_logger().info("Data sent to Servo: {}".format(servo_msg))
             servo_msg_sent.data = servo_msg
             self.servo_pub.publish(servo_msg_sent)
             last_servo_msg = servo_msg
