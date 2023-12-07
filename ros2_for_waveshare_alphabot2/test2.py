@@ -35,6 +35,7 @@ class MovementTest(Node):
 
         if imput == "Center":
             self.servo_msg_hold = [0, 0]
+            servo_msg = [0, 0]
         elif imput == "Up":
             servo_msg = [0, 5]
         elif imput == "Right":
