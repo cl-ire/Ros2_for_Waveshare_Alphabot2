@@ -71,10 +71,14 @@ class PCA9685:      # https://www.kampis-elektroecke.de/raspberry-pi/raspberry-p
 			
 	def setServoPulse(self, channel, angle):
 		# Sets the Servo Pulse,The PWM frequency must be 50HZ
-		if self.limit_left[channel] <= angle <= self.limit_right[channel]:
-			angle = angle + self.offset[channel]
+		if self.limit_left[channel] >= angle:
+			angle = self.limit_left + self.offset[channel]
+		elif self.limit_right[channel] <= angle:
+			angle = self.limit_right + self.offset[channel]
 		else:
-			angle = self.offset
+			angle = self.offset[channel]
+
+		
 		angle = 7.5 - ((angle) * 0.055)
 		pulse = int(4096.0 / 100.0 * angle)				
 		self.setPWM(channel, 0, int(pulse))		
