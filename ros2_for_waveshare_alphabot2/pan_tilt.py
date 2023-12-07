@@ -95,7 +95,7 @@ class CameraPanTiltDriver(Node):
 
 		self.subscription = self.create_subscription(
 			Int32MultiArray,
-			'/Servo',
+			'/servo',
 			self.listener_callback,
 			2)
 		self.subscription  # prevent unused variable warning

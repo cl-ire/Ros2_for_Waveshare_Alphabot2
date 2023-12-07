@@ -34,7 +34,7 @@ class JoystickDriver(Node):
         self.rate = self.create_rate(self.get_parameter_or('~rate', 10))
 
         # Setup publisher for joystick
-        self.pub = self.create_publisher(String, 'joystick', 4)
+        self.pub = self.create_publisher(String, '/joystick', 4)
         self.get_logger().info("Node 'joystick' configured.")
 
     def __del__(self):
