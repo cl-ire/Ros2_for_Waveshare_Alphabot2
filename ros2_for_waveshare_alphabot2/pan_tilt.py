@@ -116,7 +116,7 @@ class CameraPanTiltDriver(Node):
 	def setup_servo(self):
 		# channel 0 = pan 
 		# channel 1 = tilt
-		offset = [30, 0]		
+		offset = [25, 0]		
 		limit_left = [-90, -80]
 		limit_right = [90, 45]
 	
@@ -126,7 +126,7 @@ class CameraPanTiltDriver(Node):
 		self.pwm.setServoPulse(0, 0)
 		self.pwm.setServoPulse(1, 0)
 	
-		time.sleep(5)
+		time.sleep(2)
 
 
 def main(args=None):
