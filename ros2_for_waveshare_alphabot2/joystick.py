@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-import RPi.GPIO as GPIO
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+import RPi.GPIO as GPIO
 
 # Joystick
 CTR = 7  # Center
@@ -47,14 +47,6 @@ class JoystickDriver(Node):
         imput = String(data="No Imput jet")
         while rclpy.ok():
             
-            # imput_CTR = GPIO.input(self.CTR)
-            # imput_A = GPIO.input(self.A)
-            # imput_B = GPIO.input(self.B)
-            # imput_C = GPIO.input(self.C)
-            # imput_D = GPIO.input(self.D)
-
-            # self.get_logger().info("Center {} | A {} | B {} | C {} | D {}".format(imput_CTR, imput_A, imput_B, imput_C, imput_D))
-            
             if GPIO.input(self.CTR) == GPIO.LOW:
                 imput = String(data="Center")
             elif GPIO.input(self.A) == GPIO.LOW:
@@ -75,7 +67,6 @@ class JoystickDriver(Node):
                 imput_last = imput
 
 def main():
-    GPIO.cleanup()
     
     rclpy.init()
     node = JoystickDriver()

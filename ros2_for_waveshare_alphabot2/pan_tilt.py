@@ -2,9 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-
 from std_msgs.msg import String, Int32MultiArray
-
 import time
 import math
 import smbus
@@ -78,7 +76,6 @@ class PCA9685:      # https://www.kampis-elektroecke.de/raspberry-pi/raspberry-p
 			angle = self.limit_right[channel] + self.offset[channel]
 		else:
 			angle = angle + self.offset[channel]
-
 		
 		angle = 7.5 - ((angle) * 0.055)
 		pulse = int(4096.0 / 100.0 * angle)
@@ -118,7 +115,7 @@ class CameraPanTiltDriver(Node):
 		# channel 1 = tilt
 		offset = [25, 0]		
 		limit_left = [-90, -80]
-		limit_right = [90, 45]
+		limit_right = [90, 30]
 	
 		self.pwm = PCA9685(offset, limit_left, limit_right, 0x40)
 		self.pwm.setPWMFreq(50)
@@ -131,9 +128,7 @@ class CameraPanTiltDriver(Node):
 
 def main(args=None):
 	rclpy.init()
-
 	driver = CameraPanTiltDriver()
-
 	rclpy.spin(driver)
 
 	driver.destroy_node()

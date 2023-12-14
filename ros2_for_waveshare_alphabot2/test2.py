@@ -1,10 +1,9 @@
 import rclpy
 from rclpy.node import Node
-import time
 from sensor_msgs.msg import Image
 from std_msgs.msg import String, Int32MultiArray, Float32, Float32MultiArray
 from geometry_msgs.msg import Twist
-
+import time
 
 
 class MovementTest(Node):
@@ -21,8 +20,7 @@ class MovementTest(Node):
         self.servo_msg_hold = [0, 0]
         # Message publishers
         self.servo_pub = self.create_publisher(Int32MultiArray, '/servo', 4)
-
-
+    
 
     def listener_callback(self, msg):
         # Messages
@@ -55,7 +53,6 @@ class MovementTest(Node):
         self.servo_pub.publish(servo_msg_sent)
                         
         time.sleep(0.2)
-
 
 
 def main(args=None):
