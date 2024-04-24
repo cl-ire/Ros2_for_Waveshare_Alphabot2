@@ -10,6 +10,9 @@ from rclpy.node import Node
 from geometry_msgs.msg import Twist, Vector3
 from std_msgs.msg import String
 
+import board
+import busio
+import adafruit_pca9685
 import RPi.GPIO as GPIO
 import time
 
@@ -67,6 +70,20 @@ class MotionDriver(Node):
         self.PA = pa
         self.PB = pb
 
+        # Initialize the PCA9685 chip
+        self.i2c = busio.I2C(scl=board.SCL, sda=board.SDA)
+        self.pca = adafruit_pca9685.PCA9685(self.i2c)
+        self.pca.frequency = 500
+
+        self.loginfo("Node 'Motion' PCA9685 chip Initilized")
+
+        # Set the PWM signal for the left and right motors
+        self.left_motor = self.pca.channels[self.IN1]
+        self.right_motor = self.pca.channels[self.IN2]
+        self.left_motor.duty_cycle = self.PA
+        self.right_motor.duty_cycle = self.PB
+
+
         # Configure GPIO
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -94,7 +111,6 @@ class MotionDriver(Node):
         GPIO.output(self.IN4, GPIO.LOW)
 
         self.loginfo("Node 'motion' GPIO configured.")
-
         self._last_received = self.get_time()
         self._timeout = self.get_parameter_or('timeout', 2)
         self.rate = self.create_rate(self.get_parameter_or('rate', 10))
