@@ -8,10 +8,8 @@ Author: Shaun Price (https://github.com/ShaunPrice)
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist, Vector3
-from std_msgs.msg import String
+from std_msgs.msg import String, Int32
 
-import board
-import busio
 import adafruit_pca9685
 import RPi.GPIO as GPIO
 import time
@@ -56,6 +54,28 @@ class Motor:
             self._backward_pwm.start(speed)
             self._forward_pwm.start(0)
 
+class DCMotorController(Node):
+    def __init__(self):
+        super().__init__('dc_motor_controller')
+        self.pca = adafruit_pca9685.PCA9685(busio.I2C(board.SCL, board.SDA))
+        self.pca.frequency = 50
+        self.motor1 = self.pca.channels[0]
+        self.motor2 = self.pca.channels[1]
+        self.motor1_speed = 0
+        self.motor2_speed = 0
+        self.motor1_sub = self.create_subscription(
+            Int32,
+            'motor1_speed',
+            self.motor1_speed_callback,
+            10
+        )
+        self.motor2_sub = self.create_subscription(
+            Int32,
+            'motor2_speed',
+            self.motor2_speed_callback,
+            10
+        )
+
 class MotionDriver(Node):
     def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50):
         super().__init__('motion_driver')
@@ -70,20 +90,7 @@ class MotionDriver(Node):
         self.PA = pa
         self.PB = pb
 
-        # Initialize the PCA9685 chip
-        self.i2c = busio.I2C(scl=board.SCL, sda=board.SDA)
-        self.pca = adafruit_pca9685.PCA9685(self.i2c)
-        self.pca.frequency = 500
-
-        self.loginfo("Node 'Motion' PCA9685 chip Initilized")
-
-        # Set the PWM signal for the left and right motors
-        self.left_motor = self.pca.channels[self.IN1]
-        self.right_motor = self.pca.channels[self.IN2]
-        self.left_motor.duty_cycle = self.PA
-        self.right_motor.duty_cycle = self.PB
-
-
+    
         # Configure GPIO
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -184,6 +191,7 @@ class MotionDriver(Node):
 def main():
     rclpy.init()
     node = MotionDriver(IN1, IN2, IN3, IN4, ENA, ENB, PA, PB)
+    node = DCMotorController()
     node.run()
     node.destroy_node()
     rclpy.shutdown()
