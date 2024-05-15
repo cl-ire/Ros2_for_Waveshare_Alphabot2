@@ -41,10 +41,10 @@ class DCMotorController(Node):
         self.motor2.duty_cycle = motor2_speed # Set the duty cycle for motor2
 
 def main():
-    rclpy.init() # Initialize ROS2
+    rclpy.init() 
     node = DCMotorController() # Create an instance of the DCMotorController class
     node.destroy_node() # Destroy the node
-    rclpy.shutdown() # Shutdown ROS2
+    rclpy.shutdown() 
     print("Node 'motion' Stopped")
 
 if __name__ == '__main__':
