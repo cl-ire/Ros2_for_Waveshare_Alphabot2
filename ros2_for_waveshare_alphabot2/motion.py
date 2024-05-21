@@ -14,10 +14,10 @@ import busio
 from adafruit_pca9685 import PCA9685
 import time
 
-_FREQUENCY = 100 #könnte auch 50 oder 60 sein wird unterschiedlich benutzt 
-                 #bei der Quelle wird aber 100 benutzt
+_FREQUENCY = 100 #könnte auch 50hz oder 60hz sein wird unterschiedlich benutzt 
+                 #bei der Quelle wird aber 100hz  benutzt
                  #https://docs.circuitpython.org/projects/motor/en/latest/examples.html#motor-pca9685-dc-motor
-                 
+_MAX_RPM = 100  # update based on motor specifications                
 
 class DCMotorController(Node):
     def __init__(self):
@@ -59,13 +59,27 @@ class DCMotorController(Node):
 
     def set_motor_speeds(self, motor0_speed, motor1_speed, duration=1):
         try:
-            self.motor0.duty_cycle = int(motor0_speed * 65535 / 100)  # Scale speed to duty cycle
-            self.motor1.duty_cycle = int(motor1_speed * 65535 / 100)
+            motor0_duty_cycle = self.rpm_to_duty_cycle(motor0_speed)
+            motor1_duty_cycle = self.rpm_to_duty_cycle(motor1_speed)
+            
+            self.motor0.duty_cycle = motor0_duty_cycle
+            self.motor1.duty_cycle = motor1_duty_cycle
             time.sleep(duration)
             self.motor0.duty_cycle = 0
             self.motor1.duty_cycle = 0
         except Exception as e:
             self.get_logger().error(f"Failed to set motor speeds: {e}")
+
+def rpm_to_duty_cycle(self, rpm):
+        """Convert RPM to PCA9685 duty cycle (0-65535)."""
+        if rpm < 0:
+            rpm = 0
+        elif rpm > _MAX_RPM:
+            rpm = _MAX_RPM
+ 
+        duty_cycle = int((rpm / _MAX_RPM) * 65535)
+        return duty_cycle
+#set the duty cycle based based on the rpm value
 
 def main():
     rclpy.init() 
