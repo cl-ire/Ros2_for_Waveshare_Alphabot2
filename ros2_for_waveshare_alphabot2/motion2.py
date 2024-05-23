@@ -23,8 +23,9 @@ PA  = 50
 PB  = 50
 
 _FREQUENCY = 22000                 
+_MAX_RPM = 200 
 
-def _clip(value, minimum, maximum):
+def _clip(value, minimum,maximum ):
     if value < minimum:
         return minimum
     elif value > maximum:
@@ -56,7 +57,7 @@ class Motor:
 
 class MotionDriver():
     def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50):
-        super().__init__('motion_driver')
+        super().__init__()
         
         self.IN1 = in1
         self.IN2 = in2
@@ -66,16 +67,20 @@ class MotionDriver():
         self.ENB = enb
         self.PA = pa
         self.PB = pb
+        
+        
 
         # Configure GPIO
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
+       
         GPIO.setup(self.IN1, GPIO.OUT)
         GPIO.setup(self.IN2, GPIO.OUT)
         GPIO.setup(self.IN3, GPIO.OUT)
         GPIO.setup(self.IN4, GPIO.OUT)
         GPIO.setup(self.ENA, GPIO.OUT)
         GPIO.setup(self.ENB, GPIO.OUT)
+        
         self.PWMA = GPIO.PWM(self.ENA, 500)
         self.PWMB = GPIO.PWM(self.ENB, 500)
         self.PWMA.start(self.PA)
@@ -108,8 +113,9 @@ class MotionDriver():
         self._left_motor.move(0)
         self._right_motor.move(0)
 
-    def prm_to_percent(self, prm):
-        return 0 # todo
+    def rpm_to_percent(self, rpm):
+      return (rpm /_MAX_RPM) * 100
+    
 
     def __del__(self):
         GPIO.cleanup()
@@ -120,9 +126,7 @@ class DCMotorController(Node):
         super().__init__('dc_motor_controller')  # Initialize the node with the name 'dc_motor_controller'
         
         # MotionDriver initzialisiern 
-
-        self.motor0_speed = 0  # Initialize motor0 speed to 0
-        self.motor1_speed = 0  # Initialize motor1 speed to 0
+        self.motion_driver = MotionDriver()
 
         self.motor_sub = self.create_subscription(  # Create a subscription to the 'motor_speeds' topic
             Int32MultiArray,
@@ -137,11 +141,13 @@ class DCMotorController(Node):
         try:
             self.motor0_speed = msg.data[0]  # Update motor0 speed
             self.motor1_speed = msg.data[1]  # Update motor1 speed
+            self.duration = msg.data[2]      # duration update   
 
             self.get_logger().info(f"Motor 0 Speed: {self.motor0_speed}")
             self.get_logger().info(f"Motor 1 Speed: {self.motor1_speed}")
+            self.get_logger().info(f"Duration: {self.duration}")
 
-            self.set_motor_speeds(self.motor0_speed, self.motor1_speed)  # Set the motor speeds
+            self.motion_driver.set_motor_speeds(self.motor0_speed, self.motor1_speed, self.duration)  # Set the motor speeds
         except IndexError as e:
             self.get_logger().error(f"Received invalid motor speeds: {e}")
 
