@@ -28,15 +28,9 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'ir_control = ros2_for_waveshare_alphabot2.ir_control:main',
             'joystick = ros2_for_waveshare_alphabot2.joystick:main',
-            'motion = ros2_for_waveshare_alphabot2.motion:main',
+            'motion = ros2_for_waveshare_alphabot2.motion2:main',
             'pan_tilt = ros2_for_waveshare_alphabot2.pan_tilt:main',
-            'rgb_leds = ros2_for_waveshare_alphabot2.rgb_leds:main',
-            'sensors = ros2_for_waveshare_alphabot2.sensors:main',
-            'sound = ros2_for_waveshare_alphabot2.sound:main',
-            'alphabot2_test = ros2_for_waveshare_alphabot2.test:main',
-            'alphabot2_test2 = ros2_for_waveshare_alphabot2.test2:main',
         ],
     },
     
