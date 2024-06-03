@@ -145,7 +145,7 @@ class DCMotorController(Node):
         
         self.declare_parameter('max_rpm', 300)
         self._MAX_RPM = self.get_parameter('max_rpm').value
-        self.declare_parameter('motion_duration_offset', 500)
+        self.declare_parameter('motion_duration_offset', 0)
         self.duration_offset = self.get_parameter('motion_duration_offset').value
         
         # MotionDriver initzialisiern 
