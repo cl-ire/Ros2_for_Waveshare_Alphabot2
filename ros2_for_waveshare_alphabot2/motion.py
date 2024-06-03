@@ -62,8 +62,8 @@ class MotionDriver():
         
         self.PWMA = GPIO.PWM(self.ENA, 500)
         self.PWMB = GPIO.PWM(self.ENB, 500)
-        self.PWMA.start(self.PA)
-        self.PWMB.start(self.PB)
+        self.PWMA.start(0)
+        self.PWMB.start(0)
 
         # Set ENA/ENB to high
         GPIO.output(self.ENA, GPIO.HIGH)
