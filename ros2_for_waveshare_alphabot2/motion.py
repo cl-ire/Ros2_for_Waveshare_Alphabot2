@@ -120,7 +120,7 @@ class MotionDriver():
             GPIO.output(self.IN3, GPIO.LOW)
             GPIO.output(self.IN4, GPIO.LOW)
     
-    def set_motor_speeds(self, left_speed, right_speed, duration):
+    def set_motor_speeds(self, right_speed, left_speed,  duration):
         
         left_speed_percent = self.rpm_to_percent(left_speed)
         right_speed_percent = self.rpm_to_percent(right_speed)
@@ -165,11 +165,11 @@ class DCMotorController(Node):
         self.get_logger().info(f"Received motor speeds: {mesage}")
         
         try:
-            self.motor0_speed = mesage[0]  # Update motor0 speed
-            self.motor1_speed = mesage[1]  # Update motor1 speed
+            self.speed_right = mesage[0]  # Update motor0 speed
+            self.speed_left = mesage[1]  # Update motor1 speed
             self.duration = mesage[2]      # duration update   
 
-            self.motion_driver.set_motor_speeds(self.motor0_speed, self.motor1_speed, self.duration + self.duration_offset)  # Set the motor speeds
+            self.motion_driver.set_motor_speeds(self.speed_right, self.speed_left, self.duration + self.duration_offset)  # Set the motor speeds
         except IndexError as e:
             self.get_logger().error(f"Received invalid motor speeds: {e}")
 
