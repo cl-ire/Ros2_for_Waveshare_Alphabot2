@@ -130,15 +130,15 @@ class MotionDriver():
 
 
 def run():
+    motion_driver = MotionDriver()
     try:
-        while True:
-            # MotionDriver initzialisiern 
-            motion_driver = MotionDriver()
+        while True:           
             
-            speed = int(input("Enter speed (0-100): "))
+            speed_right = int(input("Enter speed right (0-100): "))
+            speed_left = int(input("Enter speed left (0-100): "))
             duration = int(input("Enter duration (in milliseconds): "))
 
-            motion_driver.set_motor_speeds(speed, speed, duration)            
+            motion_driver.set_motor_speeds(speed_left, speed_right, duration)            
             
     except KeyboardInterrupt:
         pass
