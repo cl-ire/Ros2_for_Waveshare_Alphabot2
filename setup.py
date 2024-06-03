@@ -29,7 +29,7 @@ setup(
     entry_points={
         'console_scripts': [
             'joystick = ros2_for_waveshare_alphabot2.joystick:main',
-            'motion = ros2_for_waveshare_alphabot2.motion2:main',
+            'motion = ros2_for_waveshare_alphabot2.motion:main',
             'pan_tilt = ros2_for_waveshare_alphabot2.pan_tilt:main',
         ],
     },
