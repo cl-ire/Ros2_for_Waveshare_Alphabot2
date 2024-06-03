@@ -34,9 +34,12 @@ def _clip(value, minimum,maximum ):
 
 
 class Motor:
-    def __init__(self, forward_pin, backward_pin):
+    def __init__(self, forward_pin, backward_pin, logger=None):
         self._forward_pin = forward_pin
         self._backward_pin = backward_pin
+        
+        self.logger = logger
+        
         GPIO.setup(forward_pin, GPIO.OUT)
         GPIO.setup(backward_pin, GPIO.OUT)
 
@@ -45,6 +48,9 @@ class Motor:
 
     def move(self, speed_percent):
         speed = _clip(abs(speed_percent), 0, 100)
+        
+        if self.logger:
+            self.logger.info(f"Motor speed: {speed_percent}%, Speed: {speed}")
 
         # A positive speed moves wheels forward, negative moves backward
         if speed_percent >= 0:
@@ -56,7 +62,7 @@ class Motor:
 
 
 class MotionDriver():
-    def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50, _MAX_RPM=200):
+    def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50, _MAX_RPM=200, logger=None):
         super().__init__()
         
         self.IN1 = in1
@@ -68,6 +74,7 @@ class MotionDriver():
         self.PA = pa
         self.PB = pb
         self._MAX_RPM = _MAX_RPM
+        self.logger = logger
         
 
         # Configure GPIO
@@ -99,8 +106,8 @@ class MotionDriver():
         GPIO.output(self.IN4, GPIO.LOW)
 
                 
-        self._left_motor = Motor(self.IN1, self.IN2)
-        self._right_motor = Motor(self.IN3, self.IN4)
+        self._left_motor = Motor(self.IN1, self.IN2, self.logger)
+        self._right_motor = Motor(self.IN3, self.IN4, self.logger)
         
         self.set_motor_speeds(0, 0, 0)
     
@@ -131,7 +138,7 @@ class DCMotorController(Node):
         self._MAX_RPM = self.get_parameter('max_rpm').value
         
         # MotionDriver initzialisiern 
-        self.motion_driver = MotionDriver(_MAX_RPM = self._MAX_RPM)  # Initialize the MotionDriver class
+        self.motion_driver = MotionDriver(_MAX_RPM = self._MAX_RPM, logger = self.logger())  # Initialize the MotionDriver class
 
         self.motor_sub = self.create_subscription(  # Create a subscription to the 'motor_speeds' topic
             Int32MultiArray,
