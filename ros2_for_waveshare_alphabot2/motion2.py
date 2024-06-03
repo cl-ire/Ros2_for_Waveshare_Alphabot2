@@ -136,6 +136,8 @@ class DCMotorController(Node):
         
         self.declare_parameter('max_rpm', 140)
         self._MAX_RPM = self.get_parameter('max_rpm').value
+        self.declare_parameter('motion_duration_offset', 500)
+        self.duration_offset = self.get_parameter('motion_duration_offset').value
         
         # MotionDriver initzialisiern 
         self.motion_driver = MotionDriver(_MAX_RPM = self._MAX_RPM, logger = self.get_logger())  # Initialize the MotionDriver class
@@ -162,7 +164,7 @@ class DCMotorController(Node):
             # self.get_logger().info(f"Motor 1 Speed: {self.motor1_speed}")
             # self.get_logger().info(f"Duration: {self.duration}")
 
-            self.motion_driver.set_motor_speeds(self.motor0_speed, self.motor1_speed, self.duration)  # Set the motor speeds
+            self.motion_driver.set_motor_speeds(self.motor0_speed, self.motor1_speed, self.duration + self.duration_offset)  # Set the motor speeds
         except IndexError as e:
             self.get_logger().error(f"Received invalid motor speeds: {e}")
 
