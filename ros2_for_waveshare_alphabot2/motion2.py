@@ -138,7 +138,7 @@ class DCMotorController(Node):
         self._MAX_RPM = self.get_parameter('max_rpm').value
         
         # MotionDriver initzialisiern 
-        self.motion_driver = MotionDriver(_MAX_RPM = self._MAX_RPM, logger = self.logger())  # Initialize the MotionDriver class
+        self.motion_driver = MotionDriver(_MAX_RPM = self._MAX_RPM, logger = self.get_logger())  # Initialize the MotionDriver class
 
         self.motor_sub = self.create_subscription(  # Create a subscription to the 'motor_speeds' topic
             Int32MultiArray,
