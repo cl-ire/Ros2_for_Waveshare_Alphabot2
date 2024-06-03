@@ -23,7 +23,7 @@ PA  = 50
 PB  = 50
 
 _FREQUENCY = 22000                 
-_MAX_RPM = 200 
+
 
 def _clip(value, minimum,maximum ):
     if value < minimum:
@@ -56,7 +56,7 @@ class Motor:
 
 
 class MotionDriver():
-    def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50):
+    def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50, _MAX_RPM=200):
         super().__init__()
         
         self.IN1 = in1
@@ -67,7 +67,7 @@ class MotionDriver():
         self.ENB = enb
         self.PA = pa
         self.PB = pb
-        
+        self._MAX_RPM = _MAX_RPM
         
 
         # Configure GPIO
@@ -116,7 +116,7 @@ class MotionDriver():
         self._right_motor.move(0)
 
     def rpm_to_percent(self, rpm):
-      return (rpm /_MAX_RPM) * 100
+      return (rpm /self._MAX_RPM) * 100
     
 
     def __del__(self):
@@ -127,8 +127,11 @@ class DCMotorController(Node):
     def __init__(self):
         super().__init__('dc_motor_controller')  # Initialize the node with the name 'dc_motor_controller'
         
+        self.declare_parameter('max_rpm', 140)
+        self._MAX_RPM = self.get_parameter('max_rpm').value
+        
         # MotionDriver initzialisiern 
-        self.motion_driver = MotionDriver()
+        self.motion_driver = MotionDriver(_MAX_RPM = self._MAX_RPM)  # Initialize the MotionDriver class
 
         self.motor_sub = self.create_subscription(  # Create a subscription to the 'motor_speeds' topic
             Int32MultiArray,
