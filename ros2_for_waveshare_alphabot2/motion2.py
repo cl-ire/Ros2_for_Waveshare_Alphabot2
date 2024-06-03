@@ -101,6 +101,8 @@ class MotionDriver():
                 
         self._left_motor = Motor(self.IN1, self.IN2)
         self._right_motor = Motor(self.IN3, self.IN4)
+        
+        self.set_motor_speeds(0, 0, 0)
     
     def set_motor_speeds(self, left_speed, right_speed, duration):
         
