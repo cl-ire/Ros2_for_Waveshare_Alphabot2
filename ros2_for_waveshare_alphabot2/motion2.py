@@ -138,14 +138,17 @@ class DCMotorController(Node):
         self.get_logger().info("DC Motor Controller Node has been started")
     
     def motor_speeds_callback(self, msg):
+        mesage = msg.data
+        self.get_logger().info(f"Received motor speeds: {mesage}")
+        
         try:
-            self.motor0_speed = msg.data[0]  # Update motor0 speed
-            self.motor1_speed = msg.data[1]  # Update motor1 speed
-            self.duration = msg.data[2]      # duration update   
+            self.motor0_speed = mesage[0]  # Update motor0 speed
+            self.motor1_speed = mesage[1]  # Update motor1 speed
+            self.duration = mesage[2]      # duration update   
 
-            self.get_logger().info(f"Motor 0 Speed: {self.motor0_speed}")
-            self.get_logger().info(f"Motor 1 Speed: {self.motor1_speed}")
-            self.get_logger().info(f"Duration: {self.duration}")
+            # self.get_logger().info(f"Motor 0 Speed: {self.motor0_speed}")
+            # self.get_logger().info(f"Motor 1 Speed: {self.motor1_speed}")
+            # self.get_logger().info(f"Duration: {self.duration}")
 
             self.motion_driver.set_motor_speeds(self.motor0_speed, self.motor1_speed, self.duration)  # Set the motor speeds
         except IndexError as e:
@@ -155,6 +158,9 @@ class DCMotorController(Node):
 def main():
     rclpy.init() 
     node = DCMotorController() # Create an instance of the DCMotorController class
+    
+    rclpy.spin(node)
+    
     node.destroy_node() # Destroy the node
     rclpy.shutdown() 
 
