@@ -19,7 +19,7 @@ ENB = 26
 PA  = 50
 PB  = 50
 
-_FREQUENCY = 22000                 
+_FREQUENCY = 500                 
 
 
 def _clip(value, minimum,maximum ):
@@ -105,21 +105,56 @@ class MotionDriver():
         GPIO.output(self.IN4, GPIO.LOW)
 
                 
-        self._left_motor = Motor(self.IN1, self.IN2, self.logger)
-        self._right_motor = Motor(self.IN3, self.IN4, self.logger)
+        # self._left_motor = Motor(self.IN1, self.IN2, self.logger)
+        # self._right_motor = Motor(self.IN3, self.IN4, self.logger)
         
         self.set_motor_speeds(0, 0, 0)
+        
+    def move_PWMA(self, speed_percent):
+        speed = _clip(abs(speed_percent), 0, 100)
+        
+        self.PWMA.ChangeDutyCycle(speed)  
+        
+        if speed_percent >= 0:
+            GPIO.output(self.IN1, GPIO.HIGH)
+            GPIO.output(self.IN2, GPIO.LOW)
+        elif speed_percent < 0:
+            GPIO.output(self.IN1, GPIO.LOW)
+            GPIO.output(self.IN2, GPIO.HIGH)
+        else:
+            GPIO.output(self.IN1, GPIO.LOW)
+            GPIO.output(self.IN2, GPIO.LOW)
+        
+    def move_PWMB(self, speed_percent):
+        speed = _clip(abs(speed_percent), 0, 100)
+        
+        self.PWMB.ChangeDutyCycle(speed)  
+        
+        if speed_percent >= 0:
+            GPIO.output(self.IN3, GPIO.HIGH)
+            GPIO.output(self.IN4, GPIO.LOW)
+        elif speed_percent < 0:
+            GPIO.output(self.IN3, GPIO.LOW)
+            GPIO.output(self.IN4, GPIO.HIGH)
+        else:
+            GPIO.output(self.IN3, GPIO.LOW)
+            GPIO.output(self.IN4, GPIO.LOW)
+
     
     def set_motor_speeds(self, left_speed, right_speed, duration):
         
         left_speed_percent = left_speed
         right_speed_percent = right_speed
                 
-        self._left_motor.move(left_speed_percent)
-        self._right_motor.move(right_speed_percent)
+        # self._left_motor.move(left_speed_percent)
+        # self._right_motor.move(right_speed_percent)
+        self.move_PWMA(left_speed_percent)
+        self.move_PWMB(right_speed_percent)
         time.sleep(duration / 1000)
-        self._left_motor.move(0)
-        self._right_motor.move(0)
+        # self._left_motor.move(0)
+        # self._right_motor.move(0)
+        self.move_PWMA(0)
+        self.move_PWMB(0)
 
     def rpm_to_percent(self, rpm):
       return (rpm /self._MAX_RPM) * 100
