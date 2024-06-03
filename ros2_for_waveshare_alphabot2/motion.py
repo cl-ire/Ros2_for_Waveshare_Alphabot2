@@ -34,7 +34,7 @@ def _clip(value, minimum,maximum ):
 
 
 class MotionDriver():
-    def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50, _MAX_RPM=200, logger=None):
+    def __init__(self, in1=13, in2=12, in3=21, in4=20, ena=6, enb=26, pa=50, pb=50, _MAX_RPM=500, logger=None):
         super().__init__()
         
         self.IN1 = in1
@@ -70,15 +70,14 @@ class MotionDriver():
         GPIO.output(self.ENB, GPIO.HIGH)
 
         # Set forward
-        self.PWMA.ChangeDutyCycle(self.PA)
-        self.PWMB.ChangeDutyCycle(self.PB)
-        GPIO.output(self.IN1, GPIO.HIGH)
-        GPIO.output(self.IN2, GPIO.LOW)
-        GPIO.output(self.IN3, GPIO.HIGH)
-        GPIO.output(self.IN4, GPIO.LOW)
-
-        
-        self.set_motor_speeds(0, 0, 0)
+        # self.PWMA.ChangeDutyCycle(self.PA)
+        # self.PWMB.ChangeDutyCycle(self.PB)
+        # GPIO.output(self.IN1, GPIO.HIGH)
+        # GPIO.output(self.IN2, GPIO.LOW)
+        # GPIO.output(self.IN3, GPIO.HIGH)
+        # GPIO.output(self.IN4, GPIO.LOW)
+                
+        # self.set_motor_speeds(0, 0, 0)
     
     def move_PWMA(self, speed_percent):
         speed = _clip(abs(speed_percent), 0, 100)
@@ -143,7 +142,7 @@ class DCMotorController(Node):
     def __init__(self):
         super().__init__('dc_motor_controller')  # Initialize the node with the name 'dc_motor_controller'
         
-        self.declare_parameter('max_rpm', 300)
+        self.declare_parameter('max_rpm', 500)
         self._MAX_RPM = self.get_parameter('max_rpm').value
         self.declare_parameter('motion_duration_offset', 0)
         self.duration_offset = self.get_parameter('motion_duration_offset').value
